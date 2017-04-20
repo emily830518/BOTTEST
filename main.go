@@ -8,6 +8,7 @@ import (
 	"io/ioutil"
 	"encoding/json"
 	"github.com/line/line-bot-sdk-go/linebot"
+	"strconv"
 )
 
 type device struct {
@@ -58,7 +59,7 @@ func main() {
 	if errs != nil {
 		fmt.Println(errs)
 	}
-	fmt.Println(airbox_json)
+	// fmt.Println(airbox_json)
 
 	var err error
 	bot, err = linebot.New(os.Getenv("ChannelSecret"), os.Getenv("ChannelAccessToken"))
@@ -85,6 +86,14 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 		if event.Type == linebot.EventTypeMessage {
 			switch message := event.Message.(type) {
 			case *linebot.TextMessage:
+				var txtmessage string
+				inText := strings.ToLower(message.Text)
+				for i:=0; i<len(airbox_json.Feeds); i++ {
+					if inText==strings.ToLower(airbox_json.Feeds[i].Device_id) {
+						txtmessage="Device_id:"+airbox_json.Feeds[i].Device_id+"\n"+"PM2.5:"+strconv.FormatFloat(float64(airbox_json.Feeds[i].S_d0),'f',0,64))
+					}
+					// fmt.Println(airbox_json.Feeds[i].Device_id)
+				}
 				if _, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(message.Text)).Do(); err != nil {
 					log.Print(err)
 				}
