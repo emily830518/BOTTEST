@@ -7,6 +7,7 @@ import (
 	"os"
 	"io/ioutil"
 	"encoding/json"
+	"strings"
 	"github.com/line/line-bot-sdk-go/linebot"
 	"strconv"
 )
