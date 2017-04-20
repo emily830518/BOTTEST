@@ -54,9 +54,9 @@ func main() {
 	res, _ := http.DefaultClient.Do(req)
 	defer res.Body.Close()
 	body, _ := ioutil.ReadAll(res.Body)
-	err := json.Unmarshal(body, &airbox_json)
-	if err != nil {
-		fmt.Println(err)
+	errs := json.Unmarshal(body, &airbox_json)
+	if errs != nil {
+		fmt.Println(errs)
 	}
 	fmt.Println(airbox_json)
 
