@@ -26,7 +26,7 @@ type device struct {
 	// Gps_fix float32 `json:"gps_fix"`
 	// Ver_app string `json:"ver_app"`
 	Gps_lat float32 `json:"gps_lat"`
-	// S_t0 float32 `json:"s_t0"`
+	S_t0 float32 `json:"s_t0"`
 	Timestamp string `json:"timestamp"`
 	Gps_lon float32 `json:"gps_lon"`
 	// Date string `json:"date"`
