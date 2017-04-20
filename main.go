@@ -90,7 +90,7 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 				var txtmessage string
 				inText := strings.ToLower(message.Text)
 				for i:=0; i<len(airbox_json.Feeds); i++ {
-					if inText==strings.ToLower(airbox_json.Feeds[i].Device_id) {
+					if strings.Contains(inText,strings.ToLower(airbox_json.Feeds[i].Device_id)) {
 						txtmessage="Device_id:"+airbox_json.Feeds[i].Device_id+"\n"
 						txtmessage=txtmessage+"Site Name:"+airbox_json.Feeds[i].SiteName+"\n"
 						txtmessage=txtmessage+"PM2.5:"+strconv.FormatFloat(float64(airbox_json.Feeds[i].S_d0),'f',0,64)+"\n"
