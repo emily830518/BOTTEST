@@ -95,7 +95,7 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 					}
 					// fmt.Println(airbox_json.Feeds[i].Device_id)
 				}
-				if _, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(message.Text)).Do(); err != nil {
+				if _, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(txtmessage)).Do(); err != nil {
 					log.Print(err)
 				}
 			}
