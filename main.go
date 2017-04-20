@@ -50,14 +50,14 @@ var airbox_json airbox
 
 func main() {
 	url := "https://data.lass-net.org/data/last-all-airbox.json"
-    req, _ := http.NewRequest("GET", url, nil)
-    res, _ := http.DefaultClient.Do(req)
-    defer res.Body.Close()
-    body, _ := ioutil.ReadAll(res.Body)
-    err := json.Unmarshal(body, &airbox_json)
-    if err != nil {
-        fmt.Println(err)
-    }
+	req, _ := http.NewRequest("GET", url, nil)
+	res, _ := http.DefaultClient.Do(req)
+	defer res.Body.Close()
+	body, _ := ioutil.ReadAll(res.Body)
+	err := json.Unmarshal(body, &airbox_json)
+	if err != nil {
+		fmt.Println(err)
+	}
     // fmt.Println(airbox_json)
 
 	var err error
