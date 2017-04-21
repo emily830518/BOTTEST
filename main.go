@@ -92,17 +92,18 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 				if strings.Contains(inText,"訂閱"){
 					userID:=event.Source.UserID
 					txtmessage=userID
-				}
-				for i:=0; i<len(airbox_json.Feeds); i++ {
-					if strings.Contains(inText,strings.ToLower(airbox_json.Feeds[i].Device_id)) {
-						txtmessage="Device_id: "+airbox_json.Feeds[i].Device_id+"\n"
-						txtmessage=txtmessage+"Site Name: "+airbox_json.Feeds[i].SiteName+"\n"
-						txtmessage=txtmessage+"Location: ("+strconv.FormatFloat(float64(airbox_json.Feeds[i].Gps_lon),'f',3,64)+","+strconv.FormatFloat(float64(airbox_json.Feeds[i].Gps_lat),'f',3,64)+")"+"\n"
-						txtmessage=txtmessage+"Timestamp: "+airbox_json.Feeds[i].Timestamp+"\n"
-						txtmessage=txtmessage+"PM2.5: "+strconv.FormatFloat(float64(airbox_json.Feeds[i].S_d0),'f',0,64)+"\n"
-						txtmessage=txtmessage+"Humidity: "+strconv.FormatFloat(float64(airbox_json.Feeds[i].S_h0),'f',0,64)+"\n"
-						txtmessage=txtmessage+"Temperature: "+strconv.FormatFloat(float64(airbox_json.Feeds[i].S_t0),'f',0,64)
-						break
+				} else{
+					for i:=0; i<len(airbox_json.Feeds); i++ {
+						if strings.Contains(inText,strings.ToLower(airbox_json.Feeds[i].Device_id)) {
+							txtmessage="Device_id: "+airbox_json.Feeds[i].Device_id+"\n"
+							txtmessage=txtmessage+"Site Name: "+airbox_json.Feeds[i].SiteName+"\n"
+							txtmessage=txtmessage+"Location: ("+strconv.FormatFloat(float64(airbox_json.Feeds[i].Gps_lon),'f',3,64)+","+strconv.FormatFloat(float64(airbox_json.Feeds[i].Gps_lat),'f',3,64)+")"+"\n"
+							txtmessage=txtmessage+"Timestamp: "+airbox_json.Feeds[i].Timestamp+"\n"
+							txtmessage=txtmessage+"PM2.5: "+strconv.FormatFloat(float64(airbox_json.Feeds[i].S_d0),'f',0,64)+"\n"
+							txtmessage=txtmessage+"Humidity: "+strconv.FormatFloat(float64(airbox_json.Feeds[i].S_h0),'f',0,64)+"\n"
+							txtmessage=txtmessage+"Temperature: "+strconv.FormatFloat(float64(airbox_json.Feeds[i].S_t0),'f',0,64)
+							break
+						}
 					}
 				}
 				if len(txtmessage)==0{
