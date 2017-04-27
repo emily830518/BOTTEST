@@ -9,6 +9,7 @@ import (
 	"encoding/json"
 	"strings"
 	"github.com/line/line-bot-sdk-go/linebot"
+	"github.com/go-redis/redis"
 	"strconv"
 )
 
@@ -91,7 +92,31 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 				inText := strings.ToLower(message.Text)
 				if strings.Contains(inText,"訂閱"){
 					userID:=event.Source.UserID
-					txtmessage=userID
+					client:=redis.NewClient(&redis.Options{
+							Addr:"140.109.18.233:6379",
+							Password:"",
+							DB:0,
+					})
+					for i:=0; i<len(airbox_json.Feeds); i++ {
+						if strings.Contains(inText,strings.ToLower(airbox_json.Feeds[i].Device_id)) {
+							val, err:=client.Get(airbox_json.Feeds[i].Device_id).Result()
+							if err!=nil{
+								err=Client.Set(airbox_json.Feeds[i].Device_id,userID,0)
+								if err!=nil{
+									panic(err)
+								}
+								txtmessage="訂閱成功"
+								break
+							}
+							val=val+','+userID
+							err=Client.Set(airbox_json.Feeds[i].Device_id,val,0)
+							if err!=nil{
+								panic(err)
+							}
+							txtmessage="訂閱成功"
+							break
+						}
+					}
 				} else{
 					for i:=0; i<len(airbox_json.Feeds); i++ {
 						if strings.Contains(inText,strings.ToLower(airbox_json.Feeds[i].Device_id)) {
