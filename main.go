@@ -91,14 +91,14 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 				var txtmessage string
 				inText := strings.ToLower(message.Text)
 				if strings.Contains(inText,"訂閱"){
-					userID:=event.Source.UserID
+					// userID:=event.Source.UserID
 					client:=redis.NewClient(&redis.Options{
 							Addr:"140.109.18.233:6379",
 							Password:"",
 							DB:0,
 					})
 					pong, err := client.Ping().Result()
-					txtmessage=err.Error()
+					txtmessage=pong+err.Error()
 					// for i:=0; i<len(airbox_json.Feeds); i++ {
 					// 	if strings.Contains(inText,strings.ToLower(airbox_json.Feeds[i].Device_id)) {
 					// 		client.Set(airbox_json.Feeds[i].Device_id,userID,0)
