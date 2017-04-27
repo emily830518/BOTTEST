@@ -101,7 +101,7 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 						if strings.Contains(inText,strings.ToLower(airbox_json.Feeds[i].Device_id)) {
 							val, err:=client.Get(airbox_json.Feeds[i].Device_id).Result()
 							if err!=nil{
-								err=Client.Set(airbox_json.Feeds[i].Device_id,userID,0)
+								err=client.Set(airbox_json.Feeds[i].Device_id,userID,0)
 								if err!=nil{
 									panic(err)
 								}
@@ -109,7 +109,7 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 								break
 							}
 							val=val+','+userID
-							err=Client.Set(airbox_json.Feeds[i].Device_id,val,0)
+							err=client.Set(airbox_json.Feeds[i].Device_id,val,0)
 							if err!=nil{
 								panic(err)
 							}
