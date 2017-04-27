@@ -102,18 +102,18 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 							val, err:=client.Get(airbox_json.Feeds[i].Device_id).Result()
 							if err!=nil{
 								err=client.Set(airbox_json.Feeds[i].Device_id,userID,0).Err()
-								if err!=nil{
-									panic(err)
-								}
-								txtmessage="訂閱成功"
+								// if err!=nil{
+								// 	panic(err)
+								// }
+								txtmessage="訂閱成功!"
 								break
 							}
 							val=val+","+userID
 							err=client.Set(airbox_json.Feeds[i].Device_id,val,0).Err()
-							if err!=nil{
-								panic(err)
-							}
-							txtmessage="訂閱成功"
+							// if err!=nil{
+							// 	panic(err)
+							// }
+							txtmessage="訂閱成功!"
 							break
 						}
 					}
