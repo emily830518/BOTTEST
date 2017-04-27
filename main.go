@@ -98,7 +98,7 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 							DB:0,
 					})
 					pong, err := client.Ping().Result()
-					txtmessage=err
+					txtmessage=str(err)
 					// for i:=0; i<len(airbox_json.Feeds); i++ {
 					// 	if strings.Contains(inText,strings.ToLower(airbox_json.Feeds[i].Device_id)) {
 					// 		client.Set(airbox_json.Feeds[i].Device_id,userID,0)
