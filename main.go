@@ -50,6 +50,11 @@ type airbox struct {
 
 var bot *linebot.Client
 var airbox_json airbox
+var	client=redis.NewClient(&redis.Options{
+		Addr:"hipposerver.ddns.net:6379",
+		Password:"",
+		DB:0,
+	})
 
 func main() {
 	url := "https://data.lass-net.org/data/last-all-airbox.json"
@@ -92,11 +97,6 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 				inText := strings.ToLower(message.Text)
 				if strings.Contains(inText,"訂閱"){
 					// userID:=event.Source.UserID
-					client:=redis.NewClient(&redis.Options{
-						Addr:"hipposerver.ddns.net:6379",
-						Password:"",
-						DB:0,
-					})
 					pong, _ := client.Ping().Result()
 					txtmessage=pong
 					// for i:=0; i<len(airbox_json.Feeds); i++ {
