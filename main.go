@@ -97,7 +97,7 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 						Password:"",
 						DB:0,
 					})
-					pong, err := client.Ping().Result()
+					pong, _ := client.Ping().Result()
 					txtmessage=pong
 					// for i:=0; i<len(airbox_json.Feeds); i++ {
 					// 	if strings.Contains(inText,strings.ToLower(airbox_json.Feeds[i].Device_id)) {
