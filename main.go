@@ -61,6 +61,12 @@ func main() {
 	if errs != nil {
 		fmt.Println(errs)
 	}
+
+	client:=redis.NewClient(&redis.Options{
+		Addr:"140.109.18.233:6379",
+		Password:"",
+		DB:0,
+	})
 	// fmt.Println(airbox_json)
 
 	var err error
@@ -92,11 +98,6 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 				inText := strings.ToLower(message.Text)
 				if strings.Contains(inText,"訂閱"){
 					// userID:=event.Source.UserID
-					client:=redis.NewClient(&redis.Options{
-							Addr:"140.109.18.233:6379",
-							Password:"",
-							DB:0,
-					})
 					pong, err := client.Ping().Result()
 					txtmessage=pong+err.Error()
 					// for i:=0; i<len(airbox_json.Feeds); i++ {
