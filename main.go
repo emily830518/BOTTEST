@@ -50,7 +50,7 @@ type airbox struct {
 
 var bot *linebot.Client
 var airbox_json airbox
-var client redis.NewClient()
+var client *redis.NewClient
 
 func main() {
 	url := "https://data.lass-net.org/data/last-all-airbox.json"
