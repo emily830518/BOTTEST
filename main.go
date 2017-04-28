@@ -51,7 +51,7 @@ type airbox struct {
 var bot *linebot.Client
 var airbox_json airbox
 var client=redis.NewClient(&redis.Options{
-		Addr:"127.0.0.1:6379",
+		Addr:"hipposerver.ddns.net:6379",
 		Password:"",
 		DB:0,
 })
