@@ -113,13 +113,19 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 								txtmessage="訂閱成功!"
 								break
 							}
-							val=val+","+userID
-							client.Set(airbox_json.Feeds[i].Device_id,val,0)
+							stringSlice:=strings.Split(val,",")
+							if stringInSlice(userID,stringSlice){
+								txtmessage="您已訂閱過此ID!"
+								break
+							} else{
+								val=val+","+userID
+								client.Set(airbox_json.Feeds[i].Device_id,val,0)
+								txtmessage="訂閱成功!"
+								break
+							}
 							// if err!=nil{
 							// 	panic(err)
 							// }
-							txtmessage="訂閱成功!"
-							break
 						}
 					}
 				} else{
@@ -145,4 +151,13 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 	}
+}
+
+func stringInSlice(a string, list []string) bool {
+    for _, b := range list {
+        if b == a {
+            return true
+        }
+    }
+    return false
 }
