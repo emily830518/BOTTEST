@@ -96,7 +96,7 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 				var txtmessage string
 				inText := strings.ToLower(message.Text)
 				if strings.Contains(inText,"訂閱"){
-					userID:=event.Source.UserID
+					// userID:=event.Source.UserID
 					pong, _ := client.Ping().Result()
 					txtmessage=pong
 					// for i:=0; i<len(airbox_json.Feeds); i++ {
