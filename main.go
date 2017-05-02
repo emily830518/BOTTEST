@@ -101,8 +101,8 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 					// txtmessage=pong
 					for i:=0; i<len(airbox_json.Feeds); i++ {
 						if strings.Contains(inText,strings.ToLower(airbox_json.Feeds[i].Device_id)) {
-							client.Set(airbox_json.Feeds[i].Device_id,userID,0)
-							txtmessage="訂閱成功!"
+							err=client.Set(airbox_json.Feeds[i].Device_id,userID,0).Err()
+							txtmessage="訂閱成功!"+err.Error()
 							break
 							// val, err:=client.Get(airbox_json.Feeds[i].Device_id).Result()
 							// if err!=nil{
