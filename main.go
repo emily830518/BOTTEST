@@ -79,12 +79,12 @@ func main() {
 
 	t:=time.Now()
 	_, min, _:=t.Clock()
-	if min==45{
+	if min==46{
 		pushmessage()
 	}
 }
 func pushmessage(){
-	_,err:=bot.PushMessage("U3617adbdd46283d7e859f36302f4f471", "hi!").Do()
+	_,err:=bot.PushMessage("U3617adbdd46283d7e859f36302f4f471", linebot.NewTextMessage("hi!")).Do()
 	if err!=nil{
 		panic(err)
 	}
