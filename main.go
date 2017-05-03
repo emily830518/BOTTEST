@@ -58,7 +58,6 @@ var	client=redis.NewClient(&redis.Options{
 	})
 
 func main() {
-	// _,_=bot.PushMessage("U3617adbdd46283d7e859f36302f4f471", linebot.NewTextMessage("hi!")).Do()
 	url := "https://data.lass-net.org/data/last-all-airbox.json"
 	req, _ := http.NewRequest("GET", url, nil)
 	res, _ := http.DefaultClient.Do(req)
@@ -77,7 +76,7 @@ func main() {
 	port := os.Getenv("PORT")
 	addr := fmt.Sprintf(":%s", port)
 	http.ListenAndServe(addr, nil)
-
+	_,_=bot.PushMessage("U3617adbdd46283d7e859f36302f4f471", linebot.NewTextMessage("hi!")).Do()
 
 }
 // func pushmessage(){
