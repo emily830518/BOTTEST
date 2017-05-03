@@ -91,7 +91,7 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 	// if min==0{
 	// 	pushmessage()
 	// }
-	// events, err := bot.ParseRequest(r)
+	events, err := bot.ParseRequest(r)
 
 	if err != nil {
 		if err == linebot.ErrInvalidSignature {
