@@ -79,7 +79,7 @@ func main() {
 
 	t:=time.Now()
 	_, min, _:=t.Clock()
-	if min==5{
+	if min==45{
 		pushmessage()
 	}
 }
