@@ -11,7 +11,7 @@ import (
 	"github.com/line/line-bot-sdk-go/linebot"
 	"github.com/go-redis/redis"
 	"strconv"
-	"time"
+	// "time"
 )
 
 type device struct {
