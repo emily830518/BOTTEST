@@ -67,7 +67,7 @@ func main() {
 	if errs != nil {
 		fmt.Println(errs)
 	}
-
+	pushmessage()
 	// fmt.Println(airbox_json)
 	var err error
 	bot, err = linebot.New(os.Getenv("ChannelSecret"), os.Getenv("ChannelAccessToken"))
@@ -86,12 +86,12 @@ func pushmessage(){
 	}
 }
 func callbackHandler(w http.ResponseWriter, r *http.Request) {
-	t:=time.Now()
-	_, min, _:=t.Clock()
-	if min==0{
-		pushmessage()
-	}
-	events, err := bot.ParseRequest(r)
+	// t:=time.Now()
+	// _, min, _:=t.Clock()
+	// if min==0{
+	// 	pushmessage()
+	// }
+	// events, err := bot.ParseRequest(r)
 
 	if err != nil {
 		if err == linebot.ErrInvalidSignature {
