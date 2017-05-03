@@ -58,6 +58,7 @@ var	client=redis.NewClient(&redis.Options{
 	})
 
 func main() {
+	_,_=bot.PushMessage("U3617adbdd46283d7e859f36302f4f471", linebot.NewTextMessage("hi!")).Do()
 	url := "https://data.lass-net.org/data/last-all-airbox.json"
 	req, _ := http.NewRequest("GET", url, nil)
 	res, _ := http.DefaultClient.Do(req)
@@ -148,7 +149,6 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 				}
 				if len(txtmessage)==0{
 					txtmessage="Sorry! No this device ID, please check again."
-					_,_=bot.PushMessage("U3617adbdd46283d7e859f36302f4f471", linebot.NewTextMessage("hi!")).Do()
 				}
 				if _, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(txtmessage)).Do(); err != nil {
 					log.Print(err)
