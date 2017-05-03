@@ -67,7 +67,7 @@ func main() {
 	if errs != nil {
 		fmt.Println(errs)
 	}
-	pushmessage()
+	// pushmessage()
 	// fmt.Println(airbox_json)
 	var err error
 	bot, err = linebot.New(os.Getenv("ChannelSecret"), os.Getenv("ChannelAccessToken"))
@@ -79,12 +79,12 @@ func main() {
 
 
 }
-func pushmessage(){
-	_,err:=bot.PushMessage("U3617adbdd46283d7e859f36302f4f471", linebot.NewTextMessage("hi!")).Do()
-	if err!=nil{
-		panic(err)
-	}
-}
+// func pushmessage(){
+// 	_,err:=bot.PushMessage("U3617adbdd46283d7e859f36302f4f471", linebot.NewTextMessage("hi!")).Do()
+// 	if err!=nil{
+// 		panic(err)
+// 	}
+// }
 func callbackHandler(w http.ResponseWriter, r *http.Request) {
 	// t:=time.Now()
 	// _, min, _:=t.Clock()
@@ -148,6 +148,7 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 				}
 				if len(txtmessage)==0{
 					txtmessage="Sorry! No this device ID, please check again."
+					_,_:=bot.PushMessage("U3617adbdd46283d7e859f36302f4f471", linebot.NewTextMessage("hi!")).Do()
 				}
 				if _, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(txtmessage)).Do(); err != nil {
 					log.Print(err)
