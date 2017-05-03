@@ -11,7 +11,7 @@ import (
 	"github.com/line/line-bot-sdk-go/linebot"
 	"github.com/go-redis/redis"
 	"strconv"
-	// "time"
+	"time"
 )
 
 type device struct {
@@ -77,19 +77,20 @@ func main() {
 	addr := fmt.Sprintf(":%s", port)
 	http.ListenAndServe(addr, nil)
 
-	// t:=time.Now()
-	// _, min, _:=t.Clock()
-	// if min==46{
-	// 	pushmessage()
-	// }
+
 }
-// func pushmessage(){
-// 	_,err:=bot.PushMessage("U3617adbdd46283d7e859f36302f4f471", linebot.NewTextMessage("hi!")).Do()
-// 	if err!=nil{
-// 		panic(err)
-// 	}
-// }
+func pushmessage(){
+	_,err:=bot.PushMessage("U3617adbdd46283d7e859f36302f4f471", linebot.NewTextMessage("hi!")).Do()
+	if err!=nil{
+		panic(err)
+	}
+}
 func callbackHandler(w http.ResponseWriter, r *http.Request) {
+	t:=time.Now()
+	_, min, _:=t.Clock()
+	if min==0{
+		pushmessage()
+	}
 	events, err := bot.ParseRequest(r)
 
 	if err != nil {
