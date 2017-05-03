@@ -92,7 +92,7 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 	// if min==0{
 	// 	pushmessage()
 	// }
-	_,_=bot.PushMessage("U3617adbdd46283d7e859f36302f4f471", linebot.NewTextMessage("hi!")).Do()
+	// _,_=bot.PushMessage("U3617adbdd46283d7e859f36302f4f471", linebot.NewTextMessage("hi!")).Do()
 	events, err := bot.ParseRequest(r)
 
 	if err != nil {
