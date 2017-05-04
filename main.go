@@ -130,9 +130,9 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 					// txtmessage=pong
 					for i:=0; i<len(history_json.Device_id); i++ {
 						if strings.Contains(inText,strings.ToLower(history_json.Device_id[i])) {
-							val, err:=client.Get(history_json.Feeds[i].Device_id).Result()
+							val, err:=client.Get(history_json.Device_id[i]).Result()
 							if err!=nil{
-								client.Set(history_json.Feeds[i].Device_id,userID,0)
+								client.Set(history_json.Device_id[i],userID,0)
 								txtmessage="訂閱成功!"
 								break
 							}
@@ -142,7 +142,7 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 								break
 							} else{
 								val=val+","+userID
-								client.Set(history_json.Feeds[i].Device_id,val,0)
+								client.Set(history_json.Device_id[i],val,0)
 								txtmessage="訂閱成功!"
 								break
 							}
