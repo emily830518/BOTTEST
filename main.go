@@ -49,8 +49,13 @@ type airbox struct {
 	Num_of_records int `json:"num_of_records"`
 }
 
+type subscribeid struct {
+	Device_id []string `json:"device_id"`
+}
+
 var bot *linebot.Client
 var airbox_json airbox
+var history_json subscribeid
 var	client=redis.NewClient(&redis.Options{
 		Addr:"hipposerver.ddns.net:6379",
 		Password:"",
@@ -64,6 +69,16 @@ func main() {
 	defer res.Body.Close()
 	body, _ := ioutil.ReadAll(res.Body)
 	errs := json.Unmarshal(body, &airbox_json)
+	if errs != nil {
+		fmt.Println(errs)
+	}
+
+	url = "https://data.lass-net.org/data/airbox_list.json"
+	req, _ = http.NewRequest("GET", url, nil)
+	res, _ = http.DefaultClient.Do(req)
+	defer res.Body.Close()
+	body, _ = ioutil.ReadAll(res.Body)
+	errs = json.Unmarshal(body, &history_json)
 	if errs != nil {
 		fmt.Println(errs)
 	}
@@ -113,11 +128,11 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 					userID:=event.Source.UserID
 					// pong, _ := client.Ping().Result()
 					// txtmessage=pong
-					for i:=0; i<len(airbox_json.Feeds); i++ {
-						if strings.Contains(inText,strings.ToLower(airbox_json.Feeds[i].Device_id)) {
-							val, err:=client.Get(airbox_json.Feeds[i].Device_id).Result()
+					for i:=0; i<len(history_json.Device_id); i++ {
+						if strings.Contains(inText,strings.ToLower(history_json.Device_id[i])) {
+							val, err:=client.Get(history_json.Feeds[i].Device_id).Result()
 							if err!=nil{
-								client.Set(airbox_json.Feeds[i].Device_id,userID,0)
+								client.Set(history_json.Feeds[i].Device_id,userID,0)
 								txtmessage="訂閱成功!"
 								break
 							}
@@ -127,7 +142,7 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 								break
 							} else{
 								val=val+","+userID
-								client.Set(airbox_json.Feeds[i].Device_id,val,0)
+								client.Set(history_json.Feeds[i].Device_id,val,0)
 								txtmessage="訂閱成功!"
 								break
 							}
