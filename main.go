@@ -182,8 +182,8 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 									txtmessage="訂閱成功!"
 									break
 								}
-							// }
-						// }
+							}
+						}
 					}
 				} else{
 					for i:=0; i<len(all_device); i++ {
