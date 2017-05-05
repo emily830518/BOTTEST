@@ -152,8 +152,23 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 								break
 							}
 							if strings.Contains(inText,"取消"){
-								txtmessage="抱歉!目前尚未提供取消訂閱的功能。"
-								break
+								stringSlice:=strings.Split(val,",")
+								if stringInSlice(userID,stringSlice){
+									if len(stringSlice)==1{
+										client.Del(history_json.Device_id[i])
+										txtmessage="取消訂閱成功!"
+									}
+									else{
+										val = removeStringInSlice(stringSlice, userID)
+										client.Set(history_json.Device_id[i],val,0)
+										txtmessage="取消訂閱成功!"
+									}
+									break
+								}else{
+									txtmessage="你並沒有訂閱此ID。"
+									break
+								}
+								// txtmessage="抱歉!目前尚未提供取消訂閱的功能。
 							} else{
 								stringSlice:=strings.Split(val,",")
 								if stringInSlice(userID,stringSlice){
@@ -200,5 +215,14 @@ func stringInSlice(a string, list []string) bool {
         }
     }
     return false
+}
+
+func removeStringInSlice(s []string, r string) []string {
+    for i, v := range s {
+        if v == r {
+            return append(s[:i], s[i+1:]...)
+        }
+    }
+    return s
 }
 
