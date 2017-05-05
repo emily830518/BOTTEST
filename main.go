@@ -55,6 +55,8 @@ type subscribeid struct {
 
 var bot *linebot.Client
 var airbox_json airbox
+var lass_json airbox
+var maps_json airbox
 var history_json subscribeid
 var	client=redis.NewClient(&redis.Options{
 		Addr:"hipposerver.ddns.net:6379",
@@ -72,6 +74,29 @@ func main() {
 	if errs != nil {
 		fmt.Println(errs)
 	}
+
+	url = "https://data.lass-net.org/data/last-all-lass.json"
+	req, _ = http.NewRequest("GET", url, nil)
+	res, _ = http.DefaultClient.Do(req)
+	defer res.Body.Close()
+	body, _ = ioutil.ReadAll(res.Body)
+	errs = json.Unmarshal(body, &lass_json)
+	if errs != nil {
+		fmt.Println(errs)
+	}
+
+	url = "https://data.lass-net.org/data/last-all-maps.json"
+	req, _ = http.NewRequest("GET", url, nil)
+	res, _ = http.DefaultClient.Do(req)
+	defer res.Body.Close()
+	body, _ = ioutil.ReadAll(res.Body)
+	errs = json.Unmarshal(body, &maps_json)
+	if errs != nil {
+		fmt.Println(errs)
+	}
+	var all_device []device
+	all_device=append(maps_json.Feeds,lass_json.Feeds...)
+	all_device=append(s,airbox_json.Feeds...)
 
 	url = "https://data.lass-net.org/data/airbox_list.json"
 	req, _ = http.NewRequest("GET", url, nil)
@@ -94,19 +119,8 @@ func main() {
 	http.ListenAndServe(addr, nil)
 
 }
-// func pushmessage(){
-// 	_,err:=bot.PushMessage("U3617adbdd46283d7e859f36302f4f471", linebot.NewTextMessage("hi!")).Do()
-// 	if err!=nil{
-// 		panic(err)
-// 	}
-// }
+
 func callbackHandler(w http.ResponseWriter, r *http.Request) {
-	// t:=time.Now()
-	// _, min, _:=t.Clock()
-	// if min==0{
-	// 	pushmessage()
-	// }
-	// _,_=bot.PushMessage("U3617adbdd46283d7e859f36302f4f471", linebot.NewTextMessage("hi!")).Do()
 	events, err := bot.ParseRequest(r)
 
 	if err != nil {
@@ -136,28 +150,33 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 								txtmessage="訂閱成功!"
 								break
 							}
-							stringSlice:=strings.Split(val,",")
-							if stringInSlice(userID,stringSlice){
-								txtmessage="您已訂閱過此ID!"
+							if strings.Contains(inText,"取消"){
+								txtmessage="抱歉!目前尚未提供取消訂閱的功能。"
 								break
 							} else{
-								val=val+","+userID
-								client.Set(history_json.Device_id[i],val,0)
-								txtmessage="訂閱成功!"
-								break
+								stringSlice:=strings.Split(val,",")
+								if stringInSlice(userID,stringSlice){
+									txtmessage="您已訂閱過此ID!"
+									break
+								} else{
+									val=val+","+userID
+									client.Set(history_json.Device_id[i],val,0)
+									txtmessage="訂閱成功!"
+									break
+								}
 							}
 						}
 					}
 				} else{
-					for i:=0; i<len(airbox_json.Feeds); i++ {
-						if strings.Contains(inText,strings.ToLower(airbox_json.Feeds[i].Device_id)) {
-							txtmessage="Device_id: "+airbox_json.Feeds[i].Device_id+"\n"
-							txtmessage=txtmessage+"Site Name: "+airbox_json.Feeds[i].SiteName+"\n"
-							txtmessage=txtmessage+"Location: ("+strconv.FormatFloat(float64(airbox_json.Feeds[i].Gps_lon),'f',3,64)+","+strconv.FormatFloat(float64(airbox_json.Feeds[i].Gps_lat),'f',3,64)+")"+"\n"
-							txtmessage=txtmessage+"Timestamp: "+airbox_json.Feeds[i].Timestamp+"\n"
-							txtmessage=txtmessage+"PM2.5: "+strconv.FormatFloat(float64(airbox_json.Feeds[i].S_d0),'f',0,64)+"\n"
-							txtmessage=txtmessage+"Humidity: "+strconv.FormatFloat(float64(airbox_json.Feeds[i].S_h0),'f',0,64)+"\n"
-							txtmessage=txtmessage+"Temperature: "+strconv.FormatFloat(float64(airbox_json.Feeds[i].S_t0),'f',0,64)
+					for i:=0; i<len(all_device); i++ {
+						if strings.Contains(inText,strings.ToLower(all_device.Device_id)) {
+							txtmessage="Device_id: "+all_device.Device_id+"\n"
+							txtmessage=txtmessage+"Site Name: "+all_device.SiteName+"\n"
+							txtmessage=txtmessage+"Location: ("+strconv.FormatFloat(float64(all_device.Gps_lon),'f',3,64)+","+strconv.FormatFloat(float64(all_device.Gps_lat),'f',3,64)+")"+"\n"
+							txtmessage=txtmessage+"Timestamp: "+all_device.Timestamp+"\n"
+							txtmessage=txtmessage+"PM2.5: "+strconv.FormatFloat(float64(all_device.S_d0),'f',0,64)+"\n"
+							txtmessage=txtmessage+"Humidity: "+strconv.FormatFloat(float64(all_device.S_h0),'f',0,64)+"\n"
+							txtmessage=txtmessage+"Temperature: "+strconv.FormatFloat(float64(all_device.S_t0),'f',0,64)
 							break
 						}
 					}
@@ -181,3 +200,4 @@ func stringInSlice(a string, list []string) bool {
     }
     return false
 }
+
