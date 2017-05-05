@@ -169,7 +169,7 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 						}
 					}
 				} else{
-					for i:=0; i<len(airbox_json); i++ {
+					for i:=0; i<len(airbox_json.Feeds); i++ {
 						if strings.Contains(inText,strings.ToLower(airbox_json.Feeds[i].Device_id)) {
 							txtmessage="Device_id: "+airbox_json.Feeds[i].Device_id+"\n"
 							txtmessage=txtmessage+"Site Name: "+airbox_json.Feeds[i].SiteName+"\n"
