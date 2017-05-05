@@ -57,6 +57,7 @@ var bot *linebot.Client
 var airbox_json airbox
 var lass_json airbox
 var maps_json airbox
+var all_device []device
 var history_json subscribeid
 var	client=redis.NewClient(&redis.Options{
 		Addr:"hipposerver.ddns.net:6379",
@@ -94,9 +95,8 @@ func main() {
 	if errs != nil {
 		fmt.Println(errs)
 	}
-	var all_device []device
 	all_device=append(maps_json.Feeds,lass_json.Feeds...)
-	all_device=append(s,airbox_json.Feeds...)
+	all_device=append(all_device,airbox_json.Feeds...)
 
 	url = "https://data.lass-net.org/data/airbox_list.json"
 	req, _ = http.NewRequest("GET", url, nil)
