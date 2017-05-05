@@ -158,30 +158,26 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 										client.Del(history_json.Device_id[i])
 										txtmessage="取消訂閱成功!"
 										break
-									}
-									else{
+									}else{
 										val = removeStringInSlice(stringSlice, userID)
 										client.Set(history_json.Device_id[i],val,0)
 										txtmessage="取消訂閱成功!"
 										break
 									}
-								}
-								else{
+								}else{
 									txtmessage="你並沒有訂閱此ID。"
 									break
 								}
 							}
-							else{
-								stringSlice:=strings.Split(val,",")
-								if stringInSlice(userID,stringSlice){
-									txtmessage="您已訂閱過此ID!"
-									break
-								} else{
-									val=val+","+userID
-									client.Set(history_json.Device_id[i],val,0)
-									txtmessage="訂閱成功!"
-									break
-								}
+							stringSlice:=strings.Split(val,",")
+							if stringInSlice(userID,stringSlice){
+								txtmessage="您已訂閱過此ID!"
+								break
+							} else{
+								val=val+","+userID
+								client.Set(history_json.Device_id[i],val,0)
+								txtmessage="訂閱成功!"
+								break
 							}
 						}
 					}
