@@ -171,7 +171,7 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 									break
 								}
 							}
-							//else{
+							else{
 								stringSlice:=strings.Split(val,",")
 								if stringInSlice(userID,stringSlice){
 									txtmessage="您已訂閱過此ID!"
