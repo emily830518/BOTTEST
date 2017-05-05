@@ -151,25 +151,25 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 								txtmessage="訂閱成功!"
 								break
 							}
-							if strings.Contains(inText,"取消"){
-								stringSlice:=strings.Split(val,",")
-								if stringInSlice(userID,stringSlice){
-									if len(stringSlice)==1{
-										client.Del(history_json.Device_id[i])
-										txtmessage="取消訂閱成功!"
-										break
-									}
-									else{
-										val = removeStringInSlice(stringSlice, userID)
-										client.Set(history_json.Device_id[i],val,0)
-										txtmessage="取消訂閱成功!"
-										break
-									}
-								}else{
-									txtmessage="你並沒有訂閱此ID。"
-									break
-								}
-							}
+							// if strings.Contains(inText,"取消"){
+							// 	stringSlice:=strings.Split(val,",")
+							// 	if stringInSlice(userID,stringSlice){
+							// 		if len(stringSlice)==1{
+							// 			client.Del(history_json.Device_id[i])
+							// 			txtmessage="取消訂閱成功!"
+							// 			break
+							// 		}
+							// 		else{
+							// 			val = removeStringInSlice(stringSlice, userID)
+							// 			client.Set(history_json.Device_id[i],val,0)
+							// 			txtmessage="取消訂閱成功!"
+							// 			break
+							// 		}
+							// 	}else{
+							// 		txtmessage="你並沒有訂閱此ID。"
+							// 		break
+							// 	}
+							// }
 							//else{
 								stringSlice:=strings.Split(val,",")
 								if stringInSlice(userID,stringSlice){
