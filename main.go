@@ -160,7 +160,10 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 								stringSlice:=strings.Split(val,",")
 								if stringInSlice(userID,stringSlice){
 									if len(stringSlice)==1{
-										client.Del(history_json.Device_id[i])
+										err=client.Del(history_json.Device_id[i])
+										if err!=nil{
+											txtmessage=err.Error()
+										}
 										txtmessage="1:取消訂閱成功!"
 										break
 									}else{
