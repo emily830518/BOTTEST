@@ -161,13 +161,13 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 								if stringInSlice(userID,stringSlice){
 									if len(stringSlice)==1{
 										client.Del(history_json.Device_id[i])
-										txtmessage="取消訂閱成功!"
+										txtmessage="1:取消訂閱成功!"
 										break
 									}else{
 										var s []string
 										s = removeStringInSlice(stringSlice, userID)
 										client.Set(history_json.Device_id[i],s,0)
-										txtmessage="取消訂閱成功!"
+										txtmessage="2:取消訂閱成功!"
 										break
 									}
 								}else{
