@@ -185,7 +185,16 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 					}
 				} else{
 					for i:=0; i<len(all_device); i++ {
-						if strings.Contains(inText,strings.ToLower(all_device[i].Device_id))||strings.Contains(inText,all_device[i].SiteName) {
+						if strings.Contains(inText,strings.ToLower(all_device[i].Device_id)) {
+							txtmessage="Device_id: "+all_device[i].Device_id+"\n"
+							txtmessage=txtmessage+"Site Name: "+all_device[i].SiteName+"\n"
+							txtmessage=txtmessage+"Location: ("+strconv.FormatFloat(float64(all_device[i].Gps_lon),'f',3,64)+","+strconv.FormatFloat(float64(all_device[i].Gps_lat),'f',3,64)+")"+"\n"
+							txtmessage=txtmessage+"Timestamp: "+all_device[i].Timestamp+"\n"
+							txtmessage=txtmessage+"PM2.5: "+strconv.FormatFloat(float64(all_device[i].S_d0),'f',0,64)+"\n"
+							txtmessage=txtmessage+"Humidity: "+strconv.FormatFloat(float64(all_device[i].S_h0),'f',0,64)+"\n"
+							txtmessage=txtmessage+"Temperature: "+strconv.FormatFloat(float64(all_device[i].S_t0),'f',0,64)
+							break
+						} else if len(all_device[i].SiteName)!=0 && strings.Contains(inText,all_device[i].SiteName){
 							txtmessage="Device_id: "+all_device[i].Device_id+"\n"
 							txtmessage=txtmessage+"Site Name: "+all_device[i].SiteName+"\n"
 							txtmessage=txtmessage+"Location: ("+strconv.FormatFloat(float64(all_device[i].Gps_lon),'f',3,64)+","+strconv.FormatFloat(float64(all_device[i].Gps_lat),'f',3,64)+")"+"\n"
