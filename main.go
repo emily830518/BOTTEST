@@ -163,6 +163,7 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 										err=client.Del(history_json.Device_id[i]).Err()
 										if err!=nil{
 											txtmessage=err.Error()
+											break
 										}
 										txtmessage="1:取消訂閱成功!"
 										break
