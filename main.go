@@ -145,7 +145,7 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 					// pong, _ := client.Ping().Result()
 					// txtmessage=pong
 					for i:=0; i<len(history_json.Device_id); i++ {
-						if strings.Contains(inText,strings.ToLower(history_json.Device_id[i]))||strings.Contains(inText,strings.ToLower(history_json[i].Sitename)) {
+						if strings.Contains(inText,strings.ToLower(history_json.Device_id[i]))||strings.Contains(inText,strings.ToLower(history_json.Sitename[i])) {
 							val, err:=client.Get(history_json.Device_id[i]).Result()
 							if err!=nil{
 								client.Set(history_json.Device_id[i],userID,0)
@@ -185,7 +185,7 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 					}
 				} else{
 					for i:=0; i<len(all_device); i++ {
-						if strings.Contains(inText,strings.ToLower(all_device[i].Device_id))||strings.Contains(inText,strings.ToLower(history_json[i].Sitename)) {
+						if strings.Contains(inText,strings.ToLower(all_device[i].Device_id))||strings.Contains(inText,strings.ToLower(all_device[i].SiteName)) {
 							txtmessage="Device_id: "+all_device[i].Device_id+"\n"
 							txtmessage=txtmessage+"Site Name: "+all_device[i].SiteName+"\n"
 							txtmessage=txtmessage+"Location: ("+strconv.FormatFloat(float64(all_device[i].Gps_lon),'f',3,64)+","+strconv.FormatFloat(float64(all_device[i].Gps_lat),'f',3,64)+")"+"\n"
