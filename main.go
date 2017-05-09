@@ -231,9 +231,8 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 						D:=distanceInKmBetweenEarthCoordinates(lat, lon, all_device[i].Gps_lat, all_device[i].Gps_lon)
 						if D<minD{
 							minD=D
-							// txtmessage=strconv.FormatFloat(lat,'f',3,64)+","+strconv.FormatFloat(lon,'f',3,64)
-							// txtmessage=strconv.FormatFloat(float64(minD),'f',3,64)
-							txtmessage="Device_id: "+all_device[i].Device_id+"\n"
+							txtmessage="離您所提供的位置最近的AirBox資訊如以下所示：\n"
+							txtmessage=txtmessage+"Device_id: "+all_device[i].Device_id+"\n"
 							txtmessage=txtmessage+"Site Name: "+all_device[i].SiteName+"\n"
 							txtmessage=txtmessage+"Location: ("+strconv.FormatFloat(float64(all_device[i].Gps_lon),'f',3,64)+","+strconv.FormatFloat(float64(all_device[i].Gps_lat),'f',3,64)+")"+"\n"
 							txtmessage=txtmessage+"Timestamp: "+all_device[i].Timestamp+"\n"
