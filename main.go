@@ -223,8 +223,8 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 				}
 			case *linebot.LocationMessage:
 				var txtmessage string
-				lat := message.latitude
-				lon := message.longitude
+				lat := message.Latitude
+				lon := message.Longitude
 				minD := math.MaxFloat64
 				for i:=0; i<len(all_device); i++ {
 					if all_device[i].Gps_lat<=lat+0.05 && all_device[i].Gps_lat>=lat-0.05 && all_device[i].Gps_lon<=lon+0.05 && all_device[i].Gps_lon>=lon-0.05{
