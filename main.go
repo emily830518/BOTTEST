@@ -231,6 +231,7 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 						D:=distanceInKmBetweenEarthCoordinates(lat, lon, all_device[i].Gps_lat, all_device[i].Gps_lat)
 						if D<minD{
 							minD=D
+							txtmessage=strconv.FormatFloat(lat)+","+strconv.FormatFloat(lon)
 							txtmessage="Device_id: "+all_device[i].Device_id+"\n"
 							txtmessage=txtmessage+"Site Name: "+all_device[i].SiteName+"\n"
 							txtmessage=txtmessage+"Location: ("+strconv.FormatFloat(float64(all_device[i].Gps_lon),'f',3,64)+","+strconv.FormatFloat(float64(all_device[i].Gps_lat),'f',3,64)+")"+"\n"
