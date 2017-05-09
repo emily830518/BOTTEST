@@ -11,6 +11,7 @@ import (
 	"github.com/line/line-bot-sdk-go/linebot"
 	"github.com/go-redis/redis"
 	"strconv"
+	"math"
 	// "time"
 )
 
@@ -220,6 +221,34 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 				if _, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(txtmessage)).Do(); err != nil {
 					log.Print(err)
 				}
+			case *linebot.LocationMessage:
+				var txtmessage string
+				lat := message.latitude
+				lon := message.longitude
+				minD := math.MaxFloat64
+				for i:=0; i<len(all_device); i++ {
+					if all_device[i].Gps_lat<=lat+0.05 && all_device[i].Gps_lat>=lat-0.05 && all_device[i].Gps_lon<=lon+0.05 && all_device[i].Gps_lon>=lon-0.05{
+						D:=distanceInKmBetweenEarthCoordinates(lat, lon, all_device[i].Gps_lat, all_device[i].Gps_lat)
+						if D<minD{
+							minD=D
+							txtmessage="Device_id: "+all_device[i].Device_id+"\n"
+							txtmessage=txtmessage+"Site Name: "+all_device[i].SiteName+"\n"
+							txtmessage=txtmessage+"Location: ("+strconv.FormatFloat(float64(all_device[i].Gps_lon),'f',3,64)+","+strconv.FormatFloat(float64(all_device[i].Gps_lat),'f',3,64)+")"+"\n"
+							txtmessage=txtmessage+"Timestamp: "+all_device[i].Timestamp+"\n"
+							txtmessage=txtmessage+"PM2.5: "+strconv.FormatFloat(float64(all_device[i].S_d0),'f',0,64)+"\n"
+							txtmessage=txtmessage+"Humidity: "+strconv.FormatFloat(float64(all_device[i].S_h0),'f',0,64)+"\n"
+							txtmessage=txtmessage+"Temperature: "+strconv.FormatFloat(float64(all_device[i].S_t0),'f',0,64)
+						}
+					} else{
+						continue
+					}
+				}
+				if len(txtmessage)==0{
+					txtmessage="很抱歉這附近1公里內沒有任何上線的AirBox。"
+				}
+				if _, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(txtmessage)).Do(); err != nil {
+					log.Print(err)
+				}
 			}
 		}
 	}
@@ -241,5 +270,24 @@ func removeStringInSlice(s []string, r string) []string {
         }
     }
     return s
+}
+
+func degreesToRadians(degrees float64) float64 {
+  return degrees * math.Pi / 180;
+}
+
+func distanceInKmBetweenEarthCoordinates(lat1 float64, lon1 float64, lat2 float64, lon2 float64) float64 {
+  var earthRadiusKm = 6371.0;
+
+  var dLat = degreesToRadians(lat2-lat1);
+  var dLon = degreesToRadians(lon2-lon1);
+
+  lat1 = degreesToRadians(lat1);
+  lat2 = degreesToRadians(lat2);
+
+  var a = math.Sin(dLat/2) * math.Sin(dLat/2) +
+          math.Sin(dLon/2) * math.Sin(dLon/2) * math.Cos(lat1) * math.Cos(lat2); 
+  var c = 2 * math.Atan2(math.Sqrt(a), math.Sqrt(1-a)); 
+  return earthRadiusKm * c;
 }
 
