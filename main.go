@@ -216,7 +216,7 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 					}
 				}
 				if len(txtmessage)==0{
-					txtmessage="Sorry! No this device ID, please check again."
+					txtmessage="很抱歉! 這個AirBox ID不存在或是不提供即時資訊查詢。"
 				}
 				if _, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(txtmessage)).Do(); err != nil {
 					log.Print(err)
