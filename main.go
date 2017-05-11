@@ -207,8 +207,7 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 					if err!=nil{
 						client2.Set(userID,threshold,0)
 						txtmessage="已為您將門檻值設為"+strconv.Itoa(threshold)+"，當您訂閱的AirBox超過這個門檻值將會發出警告！"
-					}
-					else{
+					} else{
 						client2.Set(userID,threshold,0)
 						txtmessage="已為您將門檻值從"+val+"改為"+strconv.Itoa(threshold)+"，當您訂閱的AirBox超過這個門檻值將會發出警告！"
 					}
