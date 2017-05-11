@@ -12,7 +12,7 @@ import (
 	"github.com/go-redis/redis"
 	"strconv"
 	"math"
-	// "time"
+	"regexp"
 )
 
 type device struct {
@@ -191,6 +191,26 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 								break
 							}
 						}
+					}
+				} else if strings.Contains(inText,"門檻值"){
+					// 新增門檻值
+					userID:=event.Source.UserID
+					client2:=redis.NewClient(&redis.Options{
+							Addr:"hipposerver.ddns.net:6379",
+							Password:"",
+							DB:1,
+					})
+					re:=regexp.MustCompile("[0-9]+")
+					number:=re.FindAllString(inText,-1)
+					threshold=number[len(number)-1]
+					val, err:=client2.Get(userID).Result()
+					if err!=nil{
+						client2.Set(userID,threshold,0)
+						txtmessage="已為您將門檻值設為"+strconv.Itoa(threshold)+"，當您訂閱的AirBox超過這個門檻值將會發出警告！"
+					}
+					else{
+						client2.Set(userID,threshold,0)
+						txtmessage="已為您將門檻值從"+val+"改為"+strconv.Itoa(threshold)+"，當您訂閱的AirBox超過這個門檻值將會發出警告！"
 					}
 				} else{
 					for i:=0; i<len(all_device); i++ {
