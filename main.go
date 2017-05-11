@@ -202,7 +202,7 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 					})
 					re:=regexp.MustCompile("[0-9]+")
 					number:=re.FindAllString(inText,-1)
-					threshold=number[len(number)-1]
+					threshold:=number[len(number)-1]
 					val, err:=client2.Get(userID).Result()
 					if err!=nil{
 						client2.Set(userID,threshold,0)
