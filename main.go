@@ -149,7 +149,7 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 						if strings.Contains(inText,strings.ToLower(history_json.Device_id[i]))||strings.Contains(inText,strings.ToLower(history_json.Sitename[i])) {
 							val, err:=client.Get(history_json.Device_id[i]).Result()
 							if err!=nil{
-								if strings.Contains(inText,"取消"){
+								if strings.Contains(inText,"取消")||strings.Contains(inText,"-c"){
 									txtmessage="你並沒有訂閱此ID。"
 									break
 								}
