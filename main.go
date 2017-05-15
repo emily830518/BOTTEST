@@ -141,12 +141,12 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 			case *linebot.TextMessage:
 				var txtmessage string
 				inText := strings.ToLower(message.Text)
-				if strings.Contains(inText,"訂閱"){
+				if strings.Contains(inText,"訂閱")||strings.Contains(inText,"@"){
 					userID:=event.Source.UserID
 					// pong, _ := client.Ping().Result()
 					// txtmessage=pong
 					for i:=0; i<len(history_json.Device_id); i++ {
-						if strings.Contains(inText,strings.ToLower(history_json.Device_id[i]))||strings.Contains(inText,history_json.Sitename[i]) {
+						if strings.Contains(inText,strings.ToLower(history_json.Device_id[i]))||strings.Contains(inText,strings.ToLower(history_json.Sitename[i])) {
 							val, err:=client.Get(history_json.Device_id[i]).Result()
 							if err!=nil{
 								if strings.Contains(inText,"取消"){
@@ -157,7 +157,7 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 								txtmessage="訂閱成功!"
 								break
 							}
-							if strings.Contains(inText,"取消"){
+							if strings.Contains(inText,"取消")||strings.Contains(inText,"-c"){
 								stringSlice:=strings.Split(val,",")
 								if stringInSlice(userID,stringSlice){
 									if len(stringSlice)==1{
@@ -192,7 +192,7 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 							}
 						}
 					}
-				} else if strings.Contains(inText,"門檻值"){
+				} else if strings.Contains(inText,"門檻值")||strings.Contains(inText,"-t"){
 					// 新增門檻值
 					userID:=event.Source.UserID
 					client2:=redis.NewClient(&redis.Options{
@@ -211,6 +211,11 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 						client2.Set(userID,threshold,0)
 						txtmessage="已為您將門檻值從"+val+"改為"+threshold+"，當您訂閱的AirBox超過這個門檻值將會發出警告！"
 					}
+				} else if strings.Contains(inText,"help"){
+					txtmessage="[HELP]\n"
+					txtmessage=txtmessage+"1. 訂閱機器：@Device_id/SiteName, ex: @28C2DDDD47A8(id大小寫不拘) 或 @AirBox-LASS-47 (LJ Office)\n"
+					txtmessage=txtmessage+"2. 取消訂閱：-c Device_id/SiteName, ex: -c 28C2DDDD47A8(id大小寫不拘) 或 -c AirBox-LASS-47 (LJ Office)\n"
+					txtmessage=txtmessage+"3. 門檻值：-t 門檻值, ex：-t 100"
 				} else{
 					for i:=0; i<len(all_device); i++ {
 						if strings.Contains(inText,strings.ToLower(all_device[i].Device_id)) {
@@ -222,7 +227,7 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 							txtmessage=txtmessage+"Humidity: "+strconv.FormatFloat(float64(all_device[i].S_h0),'f',0,64)+"\n"
 							txtmessage=txtmessage+"Temperature: "+strconv.FormatFloat(float64(all_device[i].S_t0),'f',0,64)
 							break
-						} else if len(all_device[i].SiteName)!=0 && strings.Contains(inText,all_device[i].SiteName){
+						} else if len(all_device[i].SiteName)!=0 && strings.Contains(inText,strings.ToLower(all_device[i].SiteName)){
 							txtmessage="Device_id: "+all_device[i].Device_id+"\n"
 							txtmessage=txtmessage+"Site Name: "+all_device[i].SiteName+"\n"
 							txtmessage=txtmessage+"Location: ("+strconv.FormatFloat(float64(all_device[i].Gps_lon),'f',3,64)+","+strconv.FormatFloat(float64(all_device[i].Gps_lat),'f',3,64)+")"+"\n"
@@ -235,7 +240,7 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 					}
 				}
 				if len(txtmessage)==0{
-					txtmessage="很抱歉! 這個AirBox ID不存在或是不提供即時資訊查詢。"
+					txtmessage="很抱歉! 這個AirBox ID不存在或不提供即時資訊查詢，或指令錯誤，如需要查詢指令表請在輸入框中輸入'help'。"
 				}
 				if _, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(txtmessage)).Do(); err != nil {
 					log.Print(err)
