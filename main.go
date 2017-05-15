@@ -171,8 +171,9 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 									}else{
 										var s []string
 										s = removeStringInSlice(stringSlice, userID)
-										client.Set(history_json.Device_id[i],s,0)
+										err=client.Set(history_json.Device_id[i],s,0).Err()
 										fmt.Println(s)
+										fmt.Println(err)
 										txtmessage="取消訂閱成功!"
 										break
 									}
