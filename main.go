@@ -175,10 +175,9 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 										for k:=0; k<len(s); k++{
 											if k==0{
 												afterremoved=s[k]
+												continue
 											}
-											else{
-												afterremoved=afterremoved+","+s[k]
-											}
+											afterremoved=afterremoved+","+s[k]
 										}
 										client.Set(history_json.Device_id[i],afterremoved,0)
 										// fmt.Println(s)
