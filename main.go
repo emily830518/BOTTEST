@@ -225,7 +225,7 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 					txtmessage="[HELP]\n"
 					txtmessage=txtmessage+"1. 訂閱機器：@Device_id/SiteName, eg. @28C2DDDD47A8(id大小寫不拘) 或 @台北市龍安國小\n"
 					txtmessage=txtmessage+"2. 取消訂閱：-c @Device_id/SiteName, eg. -c @28C2DDDD47A8(id大小寫不拘) 或 -c @台北市龍安國小\n"
-					txtmessage=txtmessage+"3. 門檻值：-t 門檻值, eg. -t 100"
+					txtmessage=txtmessage+"3. 門檻值：-t 門檻值, eg. -t 100\n"
 					txtmessage=txtmessage+"4. 地點查詢：點選左下角'+'號，點選'傳送位置訊息'，分享位置即可"
 				} else{
 					for i:=0; i<len(all_device); i++ {
