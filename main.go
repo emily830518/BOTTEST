@@ -227,6 +227,21 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 					txtmessage=txtmessage+"2. 取消訂閱：-c @Device_id/SiteName, eg. -c @28C2DDDD47A8(id大小寫不拘) 或 -c @台北市龍安國小\n"
 					txtmessage=txtmessage+"3. 門檻值：-t 門檻值, eg. -t 100\n"
 					txtmessage=txtmessage+"4. 地點查詢：點選左下角'+'號，點選'傳送位置訊息'，分享位置即可"
+				} else if strings.Contains(inText,"-l"){
+					userID:=event.Source.UserID
+					subscribbed_device:=client.Keys("*").Val()
+					var list []string
+					for i:=0; i<len(subscribbed_device); i++ {
+						val:=client.Get(subscribbed_device[i])
+						stringSlice:=strings.Split(val,",")
+						if stringInSlice(userID,stringSlice){
+							list=append(list,subscribbed_device[i])
+						}
+					}
+					txtmessage="以下為您已訂閱之設備：\n"
+					for j:=0; j<len(list); j++{
+						txtmessage=txtmessage+list[j]+"\n"
+					}
 				} else{
 					for i:=0; i<len(all_device); i++ {
 						if strings.Contains(inText,strings.ToLower(all_device[i].Device_id)) {
