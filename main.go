@@ -226,7 +226,8 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 					txtmessage=txtmessage+"1. 訂閱機器：@Device_id/SiteName, eg. @28C2DDDD47A8(id大小寫不拘) 或 @台北市龍安國小\n"
 					txtmessage=txtmessage+"2. 取消訂閱：-c @Device_id/SiteName, eg. -c @28C2DDDD47A8(id大小寫不拘) 或 -c @台北市龍安國小\n"
 					txtmessage=txtmessage+"3. 門檻值：-t 門檻值, eg. -t 100\n"
-					txtmessage=txtmessage+"4. 地點查詢：點選左下角'+'號，點選'傳送位置訊息'，分享位置即可"
+					txtmessage=txtmessage+"4. 地點查詢：點選左下角'+'號，點選'傳送位置訊息'，分享位置即可\n"
+					txtmessage=txtmessage+"5. 查詢已訂閱列表：輸入'-l'"
 				} else if strings.Contains(inText,"-l"){
 					userID:=event.Source.UserID
 					subscribbed_device:=client.Keys("*").Val()
