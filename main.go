@@ -232,7 +232,7 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 					subscribbed_device:=client.Keys("*").Val()
 					var list []string
 					for i:=0; i<len(subscribbed_device); i++ {
-						val:=client.Get(subscribbed_device[i])
+						val,_:=client.Get(subscribbed_device[i]).Result()
 						stringSlice:=strings.Split(val,",")
 						if stringInSlice(userID,stringSlice){
 							list=append(list,subscribbed_device[i])
