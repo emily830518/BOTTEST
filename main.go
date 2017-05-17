@@ -305,7 +305,7 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 				if _, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(txtmessage)).Do(); err != nil {
 					log.Print(err)
 				}
-				if _, err = bot.ReplyMessage(event.ReplyToken, linebot.NewLocationMessage("","",reply_lat,reply_lon)).Do(); err != nil {
+				if _, err = bot.ReplyMessage(event.ReplyToken, linebot.NewLocationMessage("device location","Taiwan",reply_lat,reply_lon)).Do(); err != nil {
 					log.Print(err)
 				}
 			}
