@@ -279,6 +279,7 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 				minD := math.MaxFloat64
 				var reply_lat float64
 				var reply_lon float64
+				var reply_add string
 				for i:=0; i<len(all_device); i++ {
 					if all_device[i].Gps_lat<=lat+0.05 && all_device[i].Gps_lat>=lat-0.05 && all_device[i].Gps_lon<=lon+0.05 && all_device[i].Gps_lon>=lon-0.05{
 						D:=distanceInKmBetweenEarthCoordinates(lat, lon, all_device[i].Gps_lat, all_device[i].Gps_lon)
@@ -286,6 +287,7 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 							minD=D
 							reply_lat=all_device[i].Gps_lat
 							reply_lon=all_device[i].Gps_lon
+							reply_add=all_device[i].SiteName
 							txtmessage="離您所提供的位置最近的AirBox資訊如以下所示：\n"
 							txtmessage=txtmessage+"Device_id: "+all_device[i].Device_id+"\n"
 							txtmessage=txtmessage+"Site Name: "+all_device[i].SiteName+"\n"
@@ -305,14 +307,10 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 						log.Print(err)
 					}
 				} else{
-					if _, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(txtmessage), linebot.NewLocationMessage("device location","Taiwan",reply_lat,reply_lon)).Do(); err != nil {
+					if _, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(txtmessage), linebot.NewLocationMessage("device location",reply_add,reply_lat,reply_lon)).Do(); err != nil {
 						log.Print(err)
 					}
 				}
-
-				// if _, err = bot.ReplyMessage(event.ReplyToken, linebot.NewLocationMessage("device location","Taiwan",reply_lat,reply_lon)).Do(); err != nil {
-				// 	log.Print(err)
-				// }
 			}
 		}
 	}
