@@ -277,11 +277,15 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 				lat := message.Latitude
 				lon := message.Longitude
 				minD := math.MaxFloat64
+				var reply_lat float64
+				var reply_lon float64
 				for i:=0; i<len(all_device); i++ {
 					if all_device[i].Gps_lat<=lat+0.05 && all_device[i].Gps_lat>=lat-0.05 && all_device[i].Gps_lon<=lon+0.05 && all_device[i].Gps_lon>=lon-0.05{
 						D:=distanceInKmBetweenEarthCoordinates(lat, lon, all_device[i].Gps_lat, all_device[i].Gps_lon)
 						if D<minD{
 							minD=D
+							reply_lat=all_device[i].Gps_lat
+							reply_lon=all_device[i].Gps_lon
 							txtmessage="離您所提供的位置最近的AirBox資訊如以下所示：\n"
 							txtmessage=txtmessage+"Device_id: "+all_device[i].Device_id+"\n"
 							txtmessage=txtmessage+"Site Name: "+all_device[i].SiteName+"\n"
@@ -299,6 +303,9 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 					txtmessage="很抱歉這附近1公里內沒有任何上線的AirBox。"
 				}
 				if _, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(txtmessage)).Do(); err != nil {
+					log.Print(err)
+				}
+				if _, err = bot.ReplyMessage(event.ReplyToken, linebot.NewLocationMessage("","",reply_lat,reply_lon)).Do(); err != nil {
 					log.Print(err)
 				}
 			}
