@@ -279,7 +279,6 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 				minD := math.MaxFloat64
 				var reply_lat float64
 				var reply_lon float64
-				var reply []linebot.Message
 				for i:=0; i<len(all_device); i++ {
 					if all_device[i].Gps_lat<=lat+0.05 && all_device[i].Gps_lat>=lat-0.05 && all_device[i].Gps_lon<=lon+0.05 && all_device[i].Gps_lon>=lon-0.05{
 						D:=distanceInKmBetweenEarthCoordinates(lat, lon, all_device[i].Gps_lat, all_device[i].Gps_lon)
@@ -306,9 +305,7 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 						log.Print(err)
 					}
 				} else{
-					reply=append(reply,linebot.NewTextMessage(txtmessage))
-					reply=append(reply,linebot.NewLocationMessage("device location","Taiwan",reply_lat,reply_lon))
-					if _, err = bot.ReplyMessage(event.ReplyToken, reply).Do(); err != nil {
+					if _, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(txtmessage), linebot.NewLocationMessage("device location","Taiwan",reply_lat,reply_lon)).Do(); err != nil {
 						log.Print(err)
 					}
 				}
