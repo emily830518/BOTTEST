@@ -149,46 +149,46 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 						if strings.Contains(inText,strings.ToLower(history_json.Device_id[i]))||strings.Contains(inText,strings.ToLower(history_json.Sitename[i])) {
 							val, err:=client.Get(history_json.Device_id[i]).Result()
 							if err!=nil{
-								if strings.Contains(inText,"取消")||strings.Contains(inText,"-c"){
-									txtmessage="你並沒有訂閱此ID。"
-									break
-								}
+								// if strings.Contains(inText,"取消")||strings.Contains(inText,"-c"){
+								// 	txtmessage="你並沒有訂閱此ID。"
+								// 	break
+								// }
 								client.Set(history_json.Device_id[i],userID,0)
 								txtmessage="訂閱成功!"
 								break
 							}
-							if strings.Contains(inText,"取消")||strings.Contains(inText,"-c"){
-								stringSlice:=strings.Split(val,",")
-								if stringInSlice(userID,stringSlice){
-									if len(stringSlice)==1{
-										err=client.Del(history_json.Device_id[i]).Err()
-										if err!=nil{
-											txtmessage=err.Error()
-											break
-										}
-										txtmessage="取消訂閱成功!"
-										break
-									}else{
-										var s []string
-										s = removeStringInSlice(stringSlice, userID)
-										var afterremoved string
-										for k:=0; k<len(s); k++{
-											if k==0{
-												afterremoved=s[k]
-												continue
-											}
-											afterremoved=afterremoved+","+s[k]
-										}
-										client.Set(history_json.Device_id[i],afterremoved,0)
-										// fmt.Println(s)
-										// fmt.Println(err)
-										txtmessage="取消訂閱成功!"
-										break
-									}
-								}else{
-									txtmessage="你並沒有訂閱此ID。"
-									break
-								}
+							// if strings.Contains(inText,"取消")||strings.Contains(inText,"-c"){
+							// 	stringSlice:=strings.Split(val,",")
+							// 	if stringInSlice(userID,stringSlice){
+							// 		if len(stringSlice)==1{
+							// 			err=client.Del(history_json.Device_id[i]).Err()
+							// 			if err!=nil{
+							// 				txtmessage=err.Error()
+							// 				break
+							// 			}
+							// 			txtmessage="取消訂閱成功!"
+							// 			break
+							// 		}else{
+							// 			var s []string
+							// 			s = removeStringInSlice(stringSlice, userID)
+							// 			var afterremoved string
+							// 			for k:=0; k<len(s); k++{
+							// 				if k==0{
+							// 					afterremoved=s[k]
+							// 					continue
+							// 				}
+							// 				afterremoved=afterremoved+","+s[k]
+							// 			}
+							// 			client.Set(history_json.Device_id[i],afterremoved,0)
+							// 			// fmt.Println(s)
+							// 			// fmt.Println(err)
+							// 			txtmessage="取消訂閱成功!"
+							// 			break
+							// 		}
+							// 	}else{
+								txtmessage="你並沒有訂閱此ID。"
+								break
+								// }
 							}
 							stringSlice:=strings.Split(val,",")
 							if stringInSlice(userID,stringSlice){
@@ -200,6 +200,67 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 								txtmessage="訂閱成功!"
 								break
 							}
+						}
+					}
+				} else if strings.Contains(inText,"取消")||strings.Contains(inText,"-c"){
+					userID:=event.Source.UserID
+					// pong, _ := client.Ping().Result()
+					// txtmessage=pong
+					for i:=0; i<len(history_json.Device_id); i++ {
+						if strings.Contains(inText,strings.ToLower(history_json.Device_id[i]))||strings.Contains(inText,strings.ToLower(history_json.Sitename[i])) {
+							val, err:=client.Get(history_json.Device_id[i]).Result()
+							if err!=nil{
+								// if strings.Contains(inText,"取消")||strings.Contains(inText,"-c"){
+								txtmessage="你並沒有訂閱此ID。"
+								break
+								// }
+								// client.Set(history_json.Device_id[i],userID,0)
+								// txtmessage="訂閱成功!"
+								// break
+							}
+							// if strings.Contains(inText,"取消")||strings.Contains(inText,"-c"){
+							stringSlice:=strings.Split(val,",")
+							if stringInSlice(userID,stringSlice){
+								if len(stringSlice)==1{
+									err=client.Del(history_json.Device_id[i]).Err()
+									if err!=nil{
+										txtmessage=err.Error()
+										break
+									}
+									txtmessage="取消訂閱成功!"
+									break
+								}else{
+									var s []string
+									s = removeStringInSlice(stringSlice, userID)
+									var afterremoved string
+									for k:=0; k<len(s); k++{
+										if k==0{
+											afterremoved=s[k]
+											continue
+										}
+										afterremoved=afterremoved+","+s[k]
+									}
+									client.Set(history_json.Device_id[i],afterremoved,0)
+									// fmt.Println(s)
+									// fmt.Println(err)
+									txtmessage="取消訂閱成功!"
+									break
+								}
+							// 	}else{
+								// txtmessage="你並沒有訂閱此ID。"
+								// break
+								// }
+							}
+							// stringSlice:=strings.Split(val,",")
+							// if stringInSlice(userID,stringSlice){
+							// 	txtmessage="您已訂閱過此ID!"
+							// 	break
+							// } else{
+							// 	val=val+","+userID
+							// 	client.Set(history_json.Device_id[i],val,0)
+							// 	txtmessage="訂閱成功!"
+							// 	break
+							// }
 						}
 					}
 				} else if strings.Contains(inText,"門檻值")||strings.Contains(inText,"-t"){
@@ -222,12 +283,12 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 						txtmessage="已為您將門檻值從"+val+"改為"+threshold+"，當您訂閱的AirBox超過這個門檻值將會發出警告！"
 					}
 				} else if strings.Contains(inText,"help"){
-					txtmessage="[HELP]\n"
-					txtmessage=txtmessage+"1. 訂閱機器：@Device_id/SiteName, eg. @28C2DDDD47A8(id大小寫不拘) 或 @台北市龍安國小\n"
-					txtmessage=txtmessage+"2. 取消訂閱：-c @Device_id/SiteName, eg. -c @28C2DDDD47A8(id大小寫不拘) 或 -c @台北市龍安國小\n"
-					txtmessage=txtmessage+"3. 門檻值：-t 門檻值, eg. -t 100\n"
-					txtmessage=txtmessage+"4. 地點查詢：點選左下角'+'號，點選'傳送位置訊息'，分享位置即可\n"
-					txtmessage=txtmessage+"5. 查詢已訂閱列表：輸入'-l'"
+					txtmessage="[HELP] 現在各功能正在進行測試請稍候再試，謝謝！\n"
+					// txtmessage=txtmessage+"1. 訂閱機器：@Device_id/SiteName, eg. @28C2DDDD47A8(id大小寫不拘) 或 @台北市龍安國小\n"
+					// txtmessage=txtmessage+"2. 取消訂閱：-c @Device_id/SiteName, eg. -c @28C2DDDD47A8(id大小寫不拘) 或 -c @台北市龍安國小\n"
+					// txtmessage=txtmessage+"3. 門檻值：-t 門檻值, eg. -t 100\n"
+					// txtmessage=txtmessage+"4. 地點查詢：點選左下角'+'號，點選'傳送位置訊息'，分享位置即可\n"
+					// txtmessage=txtmessage+"5. 查詢已訂閱列表：輸入'-l'"
 				} else if strings.Contains(inText,"-l"){
 					userID:=event.Source.UserID
 					subscribbed_device:=client.Keys("*").Val()
