@@ -238,7 +238,7 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 					}
 					txtmessage="以下為您已訂閱之設備：\n"
 					for j:=0; j<len(list); j++{
-						txtmessage=txtmessage+mapname[list[j]]+" (id: "+list[j]+")"+"\n"
+						txtmessage=txtmessage+mapname[list[j]]+" (id:"+list[j]+")"+"\n"
 					}
 				} else{
 					for i:=0; i<len(all_device); i++ {
