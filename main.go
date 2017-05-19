@@ -201,68 +201,67 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 								break
 							}
 						}
-					}
-				} else if strings.Contains(inText,"取消")||strings.Contains(inText,"-c"){
-					userID:=event.Source.UserID
-					// pong, _ := client.Ping().Result()
-					// txtmessage=pong
-					for i:=0; i<len(history_json.Device_id); i++ {
-						if strings.Contains(inText,strings.ToLower(history_json.Device_id[i]))||strings.Contains(inText,strings.ToLower(history_json.Sitename[i])) {
-							val, err:=client.Get(history_json.Device_id[i]).Result()
-							if err!=nil{
+					} else if strings.Contains(inText,"取消")||strings.Contains(inText,"-c"){
+						userID:=event.Source.UserID
+						// pong, _ := client.Ping().Result()
+						// txtmessage=pong
+						for i:=0; i<len(history_json.Device_id); i++ {
+							if strings.Contains(inText,strings.ToLower(history_json.Device_id[i]))||strings.Contains(inText,strings.ToLower(history_json.Sitename[i])) {
+								val, err:=client.Get(history_json.Device_id[i]).Result()
+								if err!=nil{
+									// if strings.Contains(inText,"取消")||strings.Contains(inText,"-c"){
+									txtmessage="你並沒有訂閱此ID。"
+									break
+									// }
+									// client.Set(history_json.Device_id[i],userID,0)
+									// txtmessage="訂閱成功!"
+									// break
+								}
 								// if strings.Contains(inText,"取消")||strings.Contains(inText,"-c"){
-								txtmessage="你並沒有訂閱此ID。"
-								break
-								// }
-								// client.Set(history_json.Device_id[i],userID,0)
-								// txtmessage="訂閱成功!"
-								// break
-							}
-							// if strings.Contains(inText,"取消")||strings.Contains(inText,"-c"){
-							stringSlice:=strings.Split(val,",")
-							if stringInSlice(userID,stringSlice){
-								if len(stringSlice)==1{
-									err=client.Del(history_json.Device_id[i]).Err()
-									if err!=nil{
-										txtmessage=err.Error()
+								stringSlice:=strings.Split(val,",")
+								if stringInSlice(userID,stringSlice){
+									if len(stringSlice)==1{
+										err=client.Del(history_json.Device_id[i]).Err()
+										if err!=nil{
+											txtmessage=err.Error()
+											break
+										}
+										txtmessage="取消訂閱成功!"
+										break
+									}else{
+										var s []string
+										s = removeStringInSlice(stringSlice, userID)
+										var afterremoved string
+										for k:=0; k<len(s); k++{
+											if k==0{
+												afterremoved=s[k]
+												continue
+											}
+											afterremoved=afterremoved+","+s[k]
+										}
+										client.Set(history_json.Device_id[i],afterremoved,0)
+										// fmt.Println(s)
+										// fmt.Println(err)
+										txtmessage="取消訂閱成功!"
 										break
 									}
-									txtmessage="取消訂閱成功!"
-									break
-								}else{
-									var s []string
-									s = removeStringInSlice(stringSlice, userID)
-									var afterremoved string
-									for k:=0; k<len(s); k++{
-										if k==0{
-											afterremoved=s[k]
-											continue
-										}
-										afterremoved=afterremoved+","+s[k]
-									}
-									client.Set(history_json.Device_id[i],afterremoved,0)
-									// fmt.Println(s)
-									// fmt.Println(err)
-									txtmessage="取消訂閱成功!"
-									break
+								// 	}else{
+									// txtmessage="你並沒有訂閱此ID。"
+									// break
+									// }
 								}
-							// 	}else{
-								// txtmessage="你並沒有訂閱此ID。"
-								// break
+								// stringSlice:=strings.Split(val,",")
+								// if stringInSlice(userID,stringSlice){
+								// 	txtmessage="您已訂閱過此ID!"
+								// 	break
+								// } else{
+								// 	val=val+","+userID
+								// 	client.Set(history_json.Device_id[i],val,0)
+								// 	txtmessage="訂閱成功!"
+								// 	break
 								// }
 							}
-							// stringSlice:=strings.Split(val,",")
-							// if stringInSlice(userID,stringSlice){
-							// 	txtmessage="您已訂閱過此ID!"
-							// 	break
-							// } else{
-							// 	val=val+","+userID
-							// 	client.Set(history_json.Device_id[i],val,0)
-							// 	txtmessage="訂閱成功!"
-							// 	break
-							// }
 						}
-					}
 				} else if strings.Contains(inText,"門檻值")||strings.Contains(inText,"-t"){
 					// 新增門檻值
 					userID:=event.Source.UserID
