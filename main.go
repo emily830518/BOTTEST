@@ -225,7 +225,7 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 					// txtmessage=txtmessage+"3. 門檻值：-t 門檻值, eg. -t 100\n"
 					// txtmessage=txtmessage+"4. 地點查詢：點選左下角'+'號，點選'傳送位置訊息'，分享位置即可\n"
 					// txtmessage=txtmessage+"5. 查詢已訂閱列表：輸入'-l'"
-					if _, err = bot.ReplyMessage(event.ReplyToken, linebot.NewImageMessage("image","https://github.com/emily830518/BOTTEST/blob/master/images/help.png","https://github.com/emily830518/BOTTEST/blob/master/images/help.png")).Do(); err != nil {
+					if _, err = bot.ReplyMessage(event.ReplyToken, linebot.NewImageMessage("image","https://github.com/emily830518/BOTTEST/blob/master/images/help.png")).Do(); err != nil {
 						log.Print(err)
 					}
 				} else if strings.Contains(inText,"list")||strings.Contains(inText,"-l"){
