@@ -66,6 +66,7 @@ var	client=redis.NewClient(&redis.Options{
 		Password:"",
 		DB:0,
 	})
+var mapname map[string]string
 
 func main() {
 	url := "https://data.lass-net.org/data/last-all-airbox.json"
@@ -110,11 +111,13 @@ func main() {
 	if errs != nil {
 		fmt.Println(errs)
 	}
-	// pushmessage()
-	// fmt.Println(airbox_json)
+
+	mapname=make(map[string]string)
+	for i:=0; i<len(history_json.Device_id); i++{
+		mapname[history_json.Device_id[i]]=history_json.Sitename[i]
+	}
 	var err error
 	bot, err = linebot.New(os.Getenv("ChannelSecret"), os.Getenv("ChannelAccessToken"))
-	// _,_=bot.PushMessage("U3617adbdd46283d7e859f36302f4f471", linebot.NewTextMessage("hi!")).Do()
 	log.Println("Bot:", bot, " err:", err)
 	http.HandleFunc("/callback", callbackHandler)
 	port := os.Getenv("PORT")
@@ -235,7 +238,7 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 					}
 					txtmessage="以下為您已訂閱之設備：\n"
 					for j:=0; j<len(list); j++{
-						txtmessage=txtmessage+list[j]+"\n"
+						txtmessage=txtmessage+mapname[list[j]]+"("+list[j]+")"+"\n"
 					}
 				} else{
 					for i:=0; i<len(all_device); i++ {
