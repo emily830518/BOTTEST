@@ -232,7 +232,7 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 							Password:"",
 							DB:2,
 					})
-					val, err:=client.Get(userID).Result()
+					val, err:=client3.Get(userID).Result()
 					re:=regexp.MustCompile("[0-9]+")
 					number:=re.FindAllString(inText,-1)
 					hour:=number[len(number)-1]
