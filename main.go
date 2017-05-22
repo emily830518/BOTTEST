@@ -225,6 +225,30 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 					if _, err = bot.ReplyMessage(event.ReplyToken, linebot.NewImageMessage("https://raw.githubusercontent.com/emily830518/BOTTEST/master/images/help.jpg","https://raw.githubusercontent.com/emily830518/BOTTEST/master/images/help.jpg")).Do(); err != nil {
 						log.Print(err)
 					}
+				} else if strings.Contains(inText,"alarm")||strings.Contains(inText,"-a"){
+					userID:=event.Source.UserID
+					client3:=redis.NewClient(&redis.Options{
+							Addr:"hipposerver.ddns.net:6379",
+							Password:"",
+							DB:2,
+					})
+					val, err:=client.Get(userID).Result()
+					re:=regexp.MustCompile("[0-9]+")
+					number:=re.FindAllString(inText,-1)
+					hour:=number[len(number)-1]
+					if err!=nil{
+						client3.Set(userID,hour,0)
+						txtmessage="時間回報訂閱成功！您訂閱的時間有："+hour+"點。"
+					} else{
+						stringSlice:=strings.Split(val,",")
+						if stringInSlice(hour,stringSlice){
+							txtmessage="您已訂閱過此時段！"
+						} else {
+							val=val+","+hour
+							client3.Set(userID,val,0)
+							txtmessage="時間回報訂閱成功！您訂閱的時間有："+val+"點。"
+						}
+					}
 				} else if strings.Contains(inText,"list")||strings.Contains(inText,"-l"){
 					userID:=event.Source.UserID
 					subscribbed_device:=client.Keys("*").Val()
