@@ -63,7 +63,7 @@ var all_device []device
 var history_json subscribeid
 var	client=redis.NewClient(&redis.Options{
 		Addr:"hipposerver.ddns.net:6379",
-		Password:"",
+		Password:"qD7e6yet",
 		DB:0,
 	})
 var mapname map[string]string
@@ -207,7 +207,7 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 					userID:=event.Source.UserID
 					client2:=redis.NewClient(&redis.Options{
 							Addr:"hipposerver.ddns.net:6379",
-							Password:"",
+							Password:"qD7e6yet",
 							DB:1,
 					})
 					re:=regexp.MustCompile("[0-9]+")
@@ -229,7 +229,7 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 					userID:=event.Source.UserID
 					client3:=redis.NewClient(&redis.Options{
 							Addr:"hipposerver.ddns.net:6379",
-							Password:"",
+							Password:"qD7e6yet",
 							DB:2,
 					})
 					val, err:=client3.Get(userID).Result()
