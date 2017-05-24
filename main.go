@@ -278,7 +278,7 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 					school,_:=ioutil.ReadFile("school.json")
 					var schoojson schoolinfo
     				json.Unmarshal(school, &schoojson)
-    				fmt.Printf(schoojson)
+    				fmt.Printf(schoojson.School[0].Id)
 				} else {
 					for i:=0; i<len(all_device); i++ {
 						if strings.Contains(inText,strings.ToLower(all_device[i].Device_id)) {
