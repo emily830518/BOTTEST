@@ -43,6 +43,16 @@ type device struct {
 	// Time string `json:"time"`
 }
 
+type deviceloc struct {
+	Id string `json:"id"`
+	Area string `json:"area"`
+	Addr string `json:"addr"`
+}
+
+type schoolinfo struct {
+	School []deviceloc `json:"school"`
+}
+
 type airbox struct {
 	Source string `json:"source"`
 	Feeds []device `json:"feeds"`
@@ -264,7 +274,12 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 					for j:=0; j<len(list); j++{
 						txtmessage=txtmessage+mapname[list[j]]+" (id:"+list[j]+")"+"\n"
 					}
-				} else{
+				} else if strings.Contains(inText,"geoquery")||strings.Contains(inText,"-g"){
+					school,_:=ioutil.ReadFile("school.json")
+					var schoojson schoolinfo
+    				json.Unmarshal(school, &schoojson)
+    				fmt.Printf(schoojson)
+				} else {
 					for i:=0; i<len(all_device); i++ {
 						if strings.Contains(inText,strings.ToLower(all_device[i].Device_id)) {
 							txtmessage="Device_id: "+all_device[i].Device_id+"\n"
