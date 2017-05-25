@@ -22,7 +22,7 @@ type device struct {
 	// Fmt_opt int `json:"fmt_opt"`
 	// Device string `json:"device"`
 	// S_d2 float32 `json:"s_d2"`
-	S_d0 float32 `json:"s_d0"`
+	S_d0 float64 `json:"s_d0"`
 	// S_d1 float32 `json:"s_d1"`
 	S_h0 float32 `json:"s_h0"`
 	SiteName string `json:"SiteName"`
@@ -287,11 +287,11 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 						}
 					}
 					total:=0.0
-					number:=0
+					number:=0.0
 					for i:=0; i<len(all_device); i++ {
 						if stringInSlice(all_device[i].Device_id,idinloc){
 							total=total+all_device[i].S_d0
-							number=number+1
+							number=number+1.0
 						}
 					}
 					if number==0{
