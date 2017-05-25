@@ -297,7 +297,7 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 					if number==0{
 						txtmessage="目前沒有在此區域的Device上線，請查詢別的區域！"
 					} else{
-						txtmessage=queryloc+"的平均PM2.5值為"+strconv.FormatFloat(float64(total/number),'f',0,64)+"。"
+						txtmessage=queryloc+"的平均PM2.5值為"+strconv.FormatFloat(float64(total/number),'f',2,64)+"。"
 						if total/number>=54 {
 							txtmessage=txtmessage+"已超過安全範圍，請盡量減少戶外活動。"
 						} else {
