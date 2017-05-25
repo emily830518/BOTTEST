@@ -282,11 +282,11 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 					queryloc:=textslice[1]
 					var idinloc []string
 					for i:=0; i<len(schoojson.School); i++ {
-						if strings.Contains(school.School[i].addr,queryloc) {
-							idinloc=append(idinloc,school.School[i].Id)
+						if strings.Contains(schooljson.School[i].addr,queryloc) {
+							idinloc=append(idinloc,schooljson.School[i].Id)
 						}
 					}
-					total:=0
+					total:=0.0
 					number:=0
 					for i:=0; i<len(all_device); i++ {
 						if stringInSlice(all_device[i].Device_id,idinloc){
