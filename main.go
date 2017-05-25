@@ -282,8 +282,8 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 					queryloc:=textslice[1]
 					var idinloc []string
 					for i:=0; i<len(schoojson.School); i++ {
-						if strings.Contains(schooljson.School[i].addr,queryloc) {
-							idinloc=append(idinloc,schooljson.School[i].Id)
+						if strings.Contains(schoojson.School[i].Addr,queryloc) {
+							idinloc=append(idinloc,schoojson.School[i].Id)
 						}
 					}
 					total:=0.0
