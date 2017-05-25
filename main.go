@@ -277,8 +277,33 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 				} else if strings.Contains(inText,"geoquery")||strings.Contains(inText,"-g"){
 					school,_:=ioutil.ReadFile("school.json")
 					var schoojson schoolinfo
-    				json.Unmarshal(school, &schoojson)
-    				txtmessage="load ok!"+schoojson.School[0].Id
+					json.Unmarshal(school, &schoojson)
+					textslice:=strings.Split(inText," ")
+					queryloc:=textslice[1]
+					var idinloc []string
+					for i:=0; i<len(schoojson.School); i++ {
+						if strings.Contains(school.School[i].addr,queryloc) {
+							idinloc=append(idinloc,school.School[i].Id)
+						}
+					}
+					total:=0
+					number:=0
+					for i:=0; i<len(all_device); i++ {
+						if stringInSlice(all_device[i].Device_id,idinloc){
+							total=total+all_device[i].S_d0
+							number=number+1
+						}
+					}
+					if number==0{
+						txtmessage="目前沒有在此區域的Device上線，請查詢別的區域！"
+					} else{
+						txtmessage=queryloc+"的平均PM2.5值為"+strconv.FormatFloat(float64(total/number),'f',0,64)+"。"
+						if total/number>=54 {
+							txtmessage=txtmessage+"已超過安全範圍，請盡量減少戶外活動。"
+						} else {
+							txtmessage=txtmessage+"可正常進行戶外活動。"
+						}
+					}
 				} else {
 					for i:=0; i<len(all_device); i++ {
 						if strings.Contains(inText,strings.ToLower(all_device[i].Device_id)) {
