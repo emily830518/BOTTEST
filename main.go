@@ -24,12 +24,14 @@ type device struct {
 	// S_d2 float32 `json:"s_d2"`
 	S_d0 float64 `json:"s_d0"`
 	// S_d1 float32 `json:"s_d1"`
-	S_h0 float32 interface() `json:"s_h0" json:"s_h4"`
+	S_h0 float32 `json:"s_h0"`
+	S_h4 float32 `json:"s_h4"`
 	SiteName string `json:"SiteName"`
 	// Gps_fix float32 `json:"gps_fix"`
 	// Ver_app string `json:"ver_app"`
 	Gps_lat float64 `json:"gps_lat"`
-	S_t0 float32 interface() `json:"s_t0" json:"s_t4"`
+	S_t0 float32 `json:"s_t0"`
+	S_t4 float32 `json:"s_t4"`
 	Timestamp string `json:"timestamp"`
 	Gps_lon float64 `json:"gps_lon"`
 	// Date string `json:"date"`
@@ -313,7 +315,11 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 							txtmessage=txtmessage+"Timestamp: "+all_device[i].Timestamp+"\n"
 							txtmessage=txtmessage+"PM2.5: "+strconv.FormatFloat(float64(all_device[i].S_d0),'f',0,64)+"\n"
 							txtmessage=txtmessage+"Humidity: "+strconv.FormatFloat(float64(all_device[i].S_h0),'f',0,64)+"\n"
-							txtmessage=txtmessage+"Temperature: "+strconv.FormatFloat(float64(all_device[i].S_t0),'f',0,64)
+							if all_device[i].S_t0 == nil {
+								txtmessage=txtmessage+"Temperature: "+strconv.FormatFloat(float64(all_device[i].S_t4),'f',0,64)
+							} else {
+								txtmessage=txtmessage+"Temperature: "+strconv.FormatFloat(float64(all_device[i].S_t0),'f',0,64)
+							}	
 							break
 						} else if len(all_device[i].SiteName)!=0 && strings.Contains(inText,strings.ToLower(all_device[i].SiteName)){
 							txtmessage="Device_id: "+all_device[i].Device_id+"\n"
@@ -321,8 +327,16 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 							txtmessage=txtmessage+"Location: ("+strconv.FormatFloat(float64(all_device[i].Gps_lon),'f',3,64)+","+strconv.FormatFloat(float64(all_device[i].Gps_lat),'f',3,64)+")"+"\n"
 							txtmessage=txtmessage+"Timestamp: "+all_device[i].Timestamp+"\n"
 							txtmessage=txtmessage+"PM2.5: "+strconv.FormatFloat(float64(all_device[i].S_d0),'f',0,64)+"\n"
-							txtmessage=txtmessage+"Humidity: "+strconv.FormatFloat(float64(all_device[i].S_h0),'f',0,64)+"\n"
-							txtmessage=txtmessage+"Temperature: "+strconv.FormatFloat(float64(all_device[i].S_t0),'f',0,64)
+							if all_device[i].S_h0 == nil {
+								txtmessage=txtmessage+"Humidity: "+strconv.FormatFloat(float64(all_device[i].S_h4),'f',0,64)+"\n"
+							} else {
+								txtmessage=txtmessage+"Humidity: "+strconv.FormatFloat(float64(all_device[i].S_h0),'f',0,64)+"\n"
+							}
+							if all_device[i].S_t0 == nil {
+								txtmessage=txtmessage+"Temperature: "+strconv.FormatFloat(float64(all_device[i].S_t4),'f',0,64)
+							} else {
+								txtmessage=txtmessage+"Temperature: "+strconv.FormatFloat(float64(all_device[i].S_t0),'f',0,64)
+							}
 							break
 						}
 					}
@@ -358,7 +372,11 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 							txtmessage=txtmessage+"Timestamp: "+all_device[i].Timestamp+"\n"
 							txtmessage=txtmessage+"PM2.5: "+strconv.FormatFloat(float64(all_device[i].S_d0),'f',0,64)+"\n"
 							txtmessage=txtmessage+"Humidity: "+strconv.FormatFloat(float64(all_device[i].S_h0),'f',0,64)+"\n"
-							txtmessage=txtmessage+"Temperature: "+strconv.FormatFloat(float64(all_device[i].S_t0),'f',0,64)
+							if all_device[i].S_t0 == nil {
+								txtmessage=txtmessage+"Temperature: "+strconv.FormatFloat(float64(all_device[i].S_t4),'f',0,64)
+							} else {
+								txtmessage=txtmessage+"Temperature: "+strconv.FormatFloat(float64(all_device[i].S_t0),'f',0,64)
+							}
 						}
 					} else{
 						continue
