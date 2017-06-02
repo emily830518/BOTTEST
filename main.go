@@ -24,12 +24,12 @@ type device struct {
 	// S_d2 float32 `json:"s_d2"`
 	S_d0 float64 `json:"s_d0"`
 	// S_d1 float32 `json:"s_d1"`
-	S_h0 float32 `json:"s_h0" json:"s_h4"`
+	S_h0 float32 interface() `json:"s_h0" json:"s_h4"`
 	SiteName string `json:"SiteName"`
 	// Gps_fix float32 `json:"gps_fix"`
 	// Ver_app string `json:"ver_app"`
 	Gps_lat float64 `json:"gps_lat"`
-	S_t0 float32 `json:"s_t0" json:"s_t4"`
+	S_t0 float32 interface() `json:"s_t0" json:"s_t4"`
 	Timestamp string `json:"timestamp"`
 	Gps_lon float64 `json:"gps_lon"`
 	// Date string `json:"date"`
