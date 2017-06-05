@@ -156,6 +156,9 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 			case *linebot.TextMessage:
 				var txtmessage string
 				inText := strings.ToLower(message.Text)
+				if strings.Contains(inText,"台"){
+					inText = strings.Replace(inText, "台", "臺", -1)
+				}
 				if strings.Contains(inText,"subscribe")||strings.Contains(inText,"-s"){
 					userID:=event.Source.UserID
 					for i:=0; i<len(history_json.Device_id); i++ {
@@ -284,6 +287,9 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 					queryloc:=textslice[1]
 					var idinloc []string
 					for i:=0; i<len(schoojson.School); i++ {
+						if strings.Contains(schoojson.School[i].Addr,"台"){
+							schoojson.School[i].Addr = strings.Replace(schoojson.School[i].Addr, "台", "臺", -1)
+						}
 						if strings.Contains(schoojson.School[i].Addr,queryloc) {
 							idinloc=append(idinloc,schoojson.School[i].Id)
 						}
