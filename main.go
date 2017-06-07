@@ -141,9 +141,9 @@ func main() {
 	all_device=append(maps_json.Feeds,lass_json.Feeds...)
 	all_device=append(all_device,airbox_json.Feeds...)
 
-	url = "https://data.lass-net.org/data/airbox_list.json"
-	req, _ = http.NewRequest("GET", url, nil)
-	res, _ = http.DefaultClient.Do(req)
+	url := "https://data.lass-net.org/data/airbox_list.json"
+	req, _ := http.NewRequest("GET", url, nil)
+	res, _ := http.DefaultClient.Do(req)
 	defer res.Body.Close()
 	body, _ = ioutil.ReadAll(res.Body)
 	errs = json.Unmarshal(body, &history_json)
