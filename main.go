@@ -81,7 +81,7 @@ var	client=redis.NewClient(&redis.Options{
 var mapname map[string]string
 
 func main() {
-	url := "https://data.lass-net.org/data/last-all-airbox.json"
+	url := "https://lass.nchc.org.tw/data/last-all-airbox.json"
 	req, _ := http.NewRequest("GET", url, nil)
 	res, _ := http.DefaultClient.Do(req)
 	defer res.Body.Close()
