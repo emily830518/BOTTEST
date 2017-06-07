@@ -13,6 +13,7 @@ import (
 	"strconv"
 	"math"
 	"regexp"
+	"crypto/tls"
 )
 
 type device struct {
@@ -91,30 +92,22 @@ func main() {
 	if errs != nil {
 		fmt.Println(errs)
 	}
-	
-	tr := &http.Transport{
-     	TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
-    }
-    client := &http.Client{Transport: tr}
-    res, _ := client.Get("https://140.116.247.120:4443/data/last-all-maps.json")
-	body, _ := ioutil.ReadAll(res.Body)
-	errs := json.Unmarshal(body, &airbox_json)
-	if errs != nil {
-		fmt.Println(errs)
-	}
-	fmt.Println(airbox_json)
 
-	tr := &http.Transport{
-     	TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
-    }
-    client := &http.Client{Transport: tr}
-    res, _ := client.Get("https://140.113.86.130:10000/data/last-all-lass.json")
-	body, _ := ioutil.ReadAll(res.Body)
-	errs := json.Unmarshal(body, &airbox_json)
+    client = &http.Client{Transport: tr}
+    res, _ = client.Get("https://140.116.247.120:4443/data/last-all-maps.json")
+	body, _ = ioutil.ReadAll(res.Body)
+	errs = json.Unmarshal(body, &maps_json)
 	if errs != nil {
 		fmt.Println(errs)
 	}
-	fmt.Println(airbox_json)
+
+    client = &http.Client{Transport: tr}
+    res, _ = client.Get("https://140.113.86.130:10000/data/last-all-lass.json")
+	body, _ = ioutil.ReadAll(res.Body)
+	errs = json.Unmarshal(body, &lass_json)
+	if errs != nil {
+		fmt.Println(errs)
+	}
 	// url := "https://data.lass-net.org/data/last-all-airbox.json"
 	// req, _ := http.NewRequest("GET", url, nil)
 	// res, _ := http.DefaultClient.Do(req)
