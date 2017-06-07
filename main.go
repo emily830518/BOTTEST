@@ -81,35 +81,69 @@ var	client=redis.NewClient(&redis.Options{
 var mapname map[string]string
 
 func main() {
-	url := "https://data.lass-net.org/data/last-all-airbox.json"
-	req, _ := http.NewRequest("GET", url, nil)
-	res, _ := http.DefaultClient.Do(req)
-	defer res.Body.Close()
+	tr := &http.Transport{
+     	TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+    }
+    client := &http.Client{Transport: tr}
+    res, _ := client.Get("https://140.110.240.52/data/last-all-airbox.json")
 	body, _ := ioutil.ReadAll(res.Body)
 	errs := json.Unmarshal(body, &airbox_json)
 	if errs != nil {
 		fmt.Println(errs)
 	}
-
-	url = "https://data.lass-net.org/data/last-all-lass.json"
-	req, _ = http.NewRequest("GET", url, nil)
-	res, _ = http.DefaultClient.Do(req)
-	defer res.Body.Close()
-	body, _ = ioutil.ReadAll(res.Body)
-	errs = json.Unmarshal(body, &lass_json)
+	
+	tr := &http.Transport{
+     	TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+    }
+    client := &http.Client{Transport: tr}
+    res, _ := client.Get("https://140.116.247.120:4443/data/last-all-maps.json")
+	body, _ := ioutil.ReadAll(res.Body)
+	errs := json.Unmarshal(body, &airbox_json)
 	if errs != nil {
 		fmt.Println(errs)
 	}
+	fmt.Println(airbox_json)
 
-	url = "https://data.lass-net.org/data/last-all-maps.json"
-	req, _ = http.NewRequest("GET", url, nil)
-	res, _ = http.DefaultClient.Do(req)
-	defer res.Body.Close()
-	body, _ = ioutil.ReadAll(res.Body)
-	errs = json.Unmarshal(body, &maps_json)
+	tr := &http.Transport{
+     	TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+    }
+    client := &http.Client{Transport: tr}
+    res, _ := client.Get("https://140.113.86.130:10000/data/last-all-lass.json")
+	body, _ := ioutil.ReadAll(res.Body)
+	errs := json.Unmarshal(body, &airbox_json)
 	if errs != nil {
 		fmt.Println(errs)
 	}
+	fmt.Println(airbox_json)
+	// url := "https://data.lass-net.org/data/last-all-airbox.json"
+	// req, _ := http.NewRequest("GET", url, nil)
+	// res, _ := http.DefaultClient.Do(req)
+	// defer res.Body.Close()
+	// body, _ := ioutil.ReadAll(res.Body)
+	// errs := json.Unmarshal(body, &airbox_json)
+	// if errs != nil {
+	// 	fmt.Println(errs)
+	// }
+
+	// url = "https://data.lass-net.org/data/last-all-lass.json"
+	// req, _ = http.NewRequest("GET", url, nil)
+	// res, _ = http.DefaultClient.Do(req)
+	// defer res.Body.Close()
+	// body, _ = ioutil.ReadAll(res.Body)
+	// errs = json.Unmarshal(body, &lass_json)
+	// if errs != nil {
+	// 	fmt.Println(errs)
+	// }
+
+	// url = "https://data.lass-net.org/data/last-all-maps.json"
+	// req, _ = http.NewRequest("GET", url, nil)
+	// res, _ = http.DefaultClient.Do(req)
+	// defer res.Body.Close()
+	// body, _ = ioutil.ReadAll(res.Body)
+	// errs = json.Unmarshal(body, &maps_json)
+	// if errs != nil {
+	// 	fmt.Println(errs)
+	// }
 
 	all_device=append(maps_json.Feeds,lass_json.Feeds...)
 	all_device=append(all_device,airbox_json.Feeds...)
