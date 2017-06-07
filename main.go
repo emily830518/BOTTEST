@@ -143,7 +143,7 @@ func main() {
 
 	url := "https://data.lass-net.org/data/airbox_list.json"
 	req, _ := http.NewRequest("GET", url, nil)
-	res, _ := http.DefaultClient.Do(req)
+	res, _ = http.DefaultClient.Do(req)
 	defer res.Body.Close()
 	body, _ = ioutil.ReadAll(res.Body)
 	errs = json.Unmarshal(body, &history_json)
