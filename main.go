@@ -355,44 +355,66 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 							all_device[i].SiteName=mapname[all_device[i].Device_id]
 						}
 						if strings.Contains(inText,strings.ToLower(all_device[i].Device_id)) {
-							txtmessage="Device_id: "+all_device[i].Device_id+"\n"
-							txtmessage=txtmessage+"Site Name: "+all_device[i].SiteName+"\n"
-							txtmessage=txtmessage+"Location: ("+strconv.FormatFloat(float64(all_device[i].Gps_lon),'f',3,64)+","+strconv.FormatFloat(float64(all_device[i].Gps_lat),'f',3,64)+")"+"\n"
-							txtmessage=txtmessage+"Timestamp: "+all_device[i].Timestamp+"\n"
-							txtmessage=txtmessage+"PM2.5: "+strconv.FormatFloat(float64(all_device[i].S_d0),'f',0,64)+"\n"
-							if all_device[i].S_h0 == 0 {
-								txtmessage=txtmessage+"Humidity: "+strconv.FormatFloat(float64(all_device[i].S_h4),'f',0,64)+"\n"
-							} else {
-								txtmessage=txtmessage+"Humidity: "+strconv.FormatFloat(float64(all_device[i].S_h0),'f',0,64)+"\n"
+							if len(all_device[i].Timestamp)==0 {
+								txtmessage="Device_id: "+all_device[i].Device_id+"\n"
+								txtmessage=txtmessage+"Site Name: "+all_device[i].SiteName+"\n"
+								txtmessage=txtmessage+"PM2.5 Avg: "+strconv.FormatFloat(float64(all_device[i].S_d0),'f',0,64)+"\n"
+								txtmessage=txtmessage+"Humidity Avg: "+strconv.FormatFloat(float64(all_device[i].S_h0),'f',0,64)+"\n"
+								txtmessage=txtmessage+"Temperature Avg: "+strconv.FormatFloat(float64(all_device[i].S_t0),'f',0,64)+"\n"
+								txtmessage=txtmessage+"（您所查詢的Device為AirBo2，故顯示前一小時之平均值）"
+								break
 							}
-							if all_device[i].S_t0 == 0 {
-								txtmessage=txtmessage+"Temperature: "+strconv.FormatFloat(float64(all_device[i].S_t4),'f',0,64)
-							} else {
-								txtmessage=txtmessage+"Temperature: "+strconv.FormatFloat(float64(all_device[i].S_t0),'f',0,64)
-							}	
-							break
+							else {
+								txtmessage="Device_id: "+all_device[i].Device_id+"\n"
+								txtmessage=txtmessage+"Site Name: "+all_device[i].SiteName+"\n"
+								txtmessage=txtmessage+"Location: ("+strconv.FormatFloat(float64(all_device[i].Gps_lon),'f',3,64)+","+strconv.FormatFloat(float64(all_device[i].Gps_lat),'f',3,64)+")"+"\n"
+								txtmessage=txtmessage+"Timestamp: "+all_device[i].Timestamp+"\n"
+								txtmessage=txtmessage+"PM2.5: "+strconv.FormatFloat(float64(all_device[i].S_d0),'f',0,64)+"\n"
+								if all_device[i].S_h0 == 0 {
+									txtmessage=txtmessage+"Humidity: "+strconv.FormatFloat(float64(all_device[i].S_h4),'f',0,64)+"\n"
+								} else {
+									txtmessage=txtmessage+"Humidity: "+strconv.FormatFloat(float64(all_device[i].S_h0),'f',0,64)+"\n"
+								}
+								if all_device[i].S_t0 == 0 {
+									txtmessage=txtmessage+"Temperature: "+strconv.FormatFloat(float64(all_device[i].S_t4),'f',0,64)
+								} else {
+									txtmessage=txtmessage+"Temperature: "+strconv.FormatFloat(float64(all_device[i].S_t0),'f',0,64)
+								}	
+								break
+							}
 						} else if len(all_device[i].SiteName)!=0 && strings.Contains(inText,strings.ToLower(all_device[i].SiteName)){
-							txtmessage="Device_id: "+all_device[i].Device_id+"\n"
-							txtmessage=txtmessage+"Site Name: "+all_device[i].SiteName+"\n"
-							txtmessage=txtmessage+"Location: ("+strconv.FormatFloat(float64(all_device[i].Gps_lon),'f',3,64)+","+strconv.FormatFloat(float64(all_device[i].Gps_lat),'f',3,64)+")"+"\n"
-							txtmessage=txtmessage+"Timestamp: "+all_device[i].Timestamp+"\n"
-							txtmessage=txtmessage+"PM2.5: "+strconv.FormatFloat(float64(all_device[i].S_d0),'f',0,64)+"\n"
-							if all_device[i].S_h0 == 0 {
-								txtmessage=txtmessage+"Humidity: "+strconv.FormatFloat(float64(all_device[i].S_h4),'f',0,64)+"\n"
-							} else {
-								txtmessage=txtmessage+"Humidity: "+strconv.FormatFloat(float64(all_device[i].S_h0),'f',0,64)+"\n"
+							if len(all_device[i].Timestamp)==0 {
+								txtmessage="Device_id: "+all_device[i].Device_id+"\n"
+								txtmessage=txtmessage+"Site Name: "+all_device[i].SiteName+"\n"
+								txtmessage=txtmessage+"PM2.5 Avg: "+strconv.FormatFloat(float64(all_device[i].S_d0),'f',0,64)+"\n"
+								txtmessage=txtmessage+"Humidity Avg: "+strconv.FormatFloat(float64(all_device[i].S_h0),'f',0,64)+"\n"
+								txtmessage=txtmessage+"Temperature Avg: "+strconv.FormatFloat(float64(all_device[i].S_t0),'f',0,64)+"\n"
+								txtmessage=txtmessage+"（您所查詢的Device為AirBo2，故顯示前一小時之平均值）"
+								break
 							}
-							if all_device[i].S_t0 == 0 {
-								txtmessage=txtmessage+"Temperature: "+strconv.FormatFloat(float64(all_device[i].S_t4),'f',0,64)
-							} else {
-								txtmessage=txtmessage+"Temperature: "+strconv.FormatFloat(float64(all_device[i].S_t0),'f',0,64)
+							else {
+								txtmessage="Device_id: "+all_device[i].Device_id+"\n"
+								txtmessage=txtmessage+"Site Name: "+all_device[i].SiteName+"\n"
+								txtmessage=txtmessage+"Location: ("+strconv.FormatFloat(float64(all_device[i].Gps_lon),'f',3,64)+","+strconv.FormatFloat(float64(all_device[i].Gps_lat),'f',3,64)+")"+"\n"
+								txtmessage=txtmessage+"Timestamp: "+all_device[i].Timestamp+"\n"
+								txtmessage=txtmessage+"PM2.5: "+strconv.FormatFloat(float64(all_device[i].S_d0),'f',0,64)+"\n"
+								if all_device[i].S_h0 == 0 {
+									txtmessage=txtmessage+"Humidity: "+strconv.FormatFloat(float64(all_device[i].S_h4),'f',0,64)+"\n"
+								} else {
+									txtmessage=txtmessage+"Humidity: "+strconv.FormatFloat(float64(all_device[i].S_h0),'f',0,64)+"\n"
+								}
+								if all_device[i].S_t0 == 0 {
+									txtmessage=txtmessage+"Temperature: "+strconv.FormatFloat(float64(all_device[i].S_t4),'f',0,64)
+								} else {
+									txtmessage=txtmessage+"Temperature: "+strconv.FormatFloat(float64(all_device[i].S_t0),'f',0,64)
+								}
+								break
 							}
-							break
 						}
 					}
 				}
 				if len(txtmessage)==0{
-					txtmessage="很抱歉! 這個AirBox ID不存在或不提供即時資訊查詢，或指令錯誤，如需要查詢指令表請在輸入框中輸入'help'。"
+					txtmessage="很抱歉! 這個AirBox ID不存在或前一小時沒有任何一筆新的資料，或指令錯誤，如需要查詢指令表請在輸入框中輸入'help'。"
 				}
 				if !(strings.Contains(inText,"help")||strings.Contains(inText,"-h")){
 					if _, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(txtmessage)).Do(); err != nil {
