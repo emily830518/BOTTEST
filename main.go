@@ -72,6 +72,7 @@ var bot *linebot.Client
 var airbox_json airbox
 var lass_json airbox
 var maps_json airbox
+var airbox2_json airbox
 var all_device []device
 var history_json subscribeid
 var	client=redis.NewClient(&redis.Options{
@@ -108,6 +109,14 @@ func main() {
 	if errs != nil {
 		fmt.Println(errs)
 	}
+
+    client = &http.Client{Transport: tr}
+    res, _ = client.Get("https://140.113.86.130:10000/data/airbox2_hr_mean.json")
+	body, _ = ioutil.ReadAll(res.Body)
+	errs = json.Unmarshal(body, &airbox2_json)
+	if errs != nil {
+		fmt.Println(errs)
+	}
 	// url := "https://data.lass-net.org/data/last-all-airbox.json"
 	// req, _ := http.NewRequest("GET", url, nil)
 	// res, _ := http.DefaultClient.Do(req)
@@ -140,6 +149,7 @@ func main() {
 
 	all_device=append(maps_json.Feeds,lass_json.Feeds...)
 	all_device=append(all_device,airbox_json.Feeds...)
+	all_device=append(all_device,airbox2_json.Feeds...)
 
 	url := "https://data.lass-net.org/data/airbox_list.json"
 	req, _ := http.NewRequest("GET", url, nil)
@@ -341,6 +351,9 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 					}
 				} else {
 					for i:=0; i<len(all_device); i++ {
+						if len(all_device[i].SiteName)==0{
+							all_device[i].SiteName=mapname[all_device[i].Device_id]
+						}
 						if strings.Contains(inText,strings.ToLower(all_device[i].Device_id)) {
 							txtmessage="Device_id: "+all_device[i].Device_id+"\n"
 							txtmessage=txtmessage+"Site Name: "+all_device[i].SiteName+"\n"
