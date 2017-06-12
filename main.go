@@ -363,8 +363,7 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 								txtmessage=txtmessage+"Temperature Avg: "+strconv.FormatFloat(float64(all_device[i].S_t0),'f',0,64)+"\n"
 								txtmessage=txtmessage+"（您所查詢的Device為AirBo2，故顯示前一小時之平均值）"
 								break
-							}
-							else {
+							} else {
 								txtmessage="Device_id: "+all_device[i].Device_id+"\n"
 								txtmessage=txtmessage+"Site Name: "+all_device[i].SiteName+"\n"
 								txtmessage=txtmessage+"Location: ("+strconv.FormatFloat(float64(all_device[i].Gps_lon),'f',3,64)+","+strconv.FormatFloat(float64(all_device[i].Gps_lat),'f',3,64)+")"+"\n"
@@ -391,8 +390,7 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 								txtmessage=txtmessage+"Temperature Avg: "+strconv.FormatFloat(float64(all_device[i].S_t0),'f',0,64)+"\n"
 								txtmessage=txtmessage+"（您所查詢的Device為AirBo2，故顯示前一小時之平均值）"
 								break
-							}
-							else {
+							} else {
 								txtmessage="Device_id: "+all_device[i].Device_id+"\n"
 								txtmessage=txtmessage+"Site Name: "+all_device[i].SiteName+"\n"
 								txtmessage=txtmessage+"Location: ("+strconv.FormatFloat(float64(all_device[i].Gps_lon),'f',3,64)+","+strconv.FormatFloat(float64(all_device[i].Gps_lat),'f',3,64)+")"+"\n"
